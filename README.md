@@ -1,5 +1,5 @@
 # 🎓 Faculty Load Management System (FLMS)
-### Apex Institute of Engineering & Technology
+### Suryodaya College Of Engineering and Technology
 
 A modern, professional, responsive, and fully functional **Faculty Load Management System** built with **Python**, **FastAPI**, **SQLite**, **SQLAlchemy**, and a sleek **HTML5/CSS3/JavaScript** frontend with **Chart.js**, **ReportLab**, and **Pandas/OpenPyXL**.
 
@@ -85,7 +85,7 @@ A modern, professional, responsive, and fully functional **Faculty Load Manageme
   - *Detailed Schedules*
   - *Department KPI Metrics*
 - **PDF Export (.pdf)**: High-resolution official document generated using `reportlab`:
-  - Institutional header: "Apex Institute of Engineering & Technology"
+  - Institutional header: "Suryodaya College Of Engineering and Technology"
   - Summary KPI cards
   - Faculty workload table with status coloring
   - Sign-off block for Academic Coordinator, HOD, and Dean Academics.

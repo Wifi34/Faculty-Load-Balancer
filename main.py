@@ -1,14 +1,14 @@
 import os
 from contextlib import asynccontextmanager
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Depends, HTTPException
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 
-from app.database import SessionLocal, IS_VERCEL
+from app.database import SessionLocal, IS_VERCEL, get_db
 from app.seed_data import init_db, seed_sample_data
-from app.scheduler import start_background_scheduler, stop_background_scheduler
+from app.scheduler import start_background_scheduler, stop_background_scheduler, check_and_generate_reminders
 from app.api.auth_routes import router as auth_router
 from app.api.faculty_routes import router as faculty_router
 from app.api.schedule_routes import router as schedule_router
@@ -40,7 +40,7 @@ if IS_VERCEL:
 async def lifespan(app: FastAPI):
     # Startup
     if not IS_VERCEL:
-        print("[Application Lifecycle] Initializing SQLite database...")
+        print("[Application Lifecycle] Initializing database...")
         setup_database()
         print("[Application Lifecycle] Starting background scheduler...")
         try:
@@ -58,8 +58,8 @@ async def lifespan(app: FastAPI):
             print(f"[Scheduler Shutdown Warning]: {e}")
 
 app = FastAPI(
-    title="Faculty Load Management System",
-    description="Comprehensive Faculty Load, Timetable, Duty Assignment, and Notification Portal for Engineering Colleges",
+    title="Faculty Load Management System - SCET",
+    description="Suryodaya College Of Engineering and Technology - Faculty Load, Timetable, Duty Assignment, and Notification Portal",
     version="1.0.0",
     lifespan=lifespan
 )
@@ -106,7 +106,30 @@ async def serve_index():
         if os.path.exists(candidate):
             with open(candidate, "r", encoding="utf-8") as f:
                 return HTMLResponse(content=f.read())
-    return HTMLResponse("<h1>Faculty Load Management System</h1><p>Loading application...</p>")
+    return HTMLResponse("<h1>Suryodaya College Of Engineering and Technology</h1><p>Faculty Load Management System is loading...</p>")
+
+@app.api_route("/api/cron/reminders", methods=["GET", "POST"])
+def cron_reminders(
+    request: Request,
+    db: Session = Depends(get_db)
+):
+    """
+    Automated reminder cron endpoint called by Vercel Cron or external scheduler.
+    Optionally verified against CRON_SECRET if configured.
+    """
+    cron_secret = os.environ.get("CRON_SECRET")
+    auth_header = request.headers.get("authorization")
+    if cron_secret and auth_header != f"Bearer {cron_secret}":
+        raise HTTPException(status_code=401, detail="Unauthorized cron invocation")
+
+    import datetime
+    check_and_generate_reminders(db)
+    return {
+        "status": "success",
+        "timestamp": datetime.datetime.utcnow().isoformat(),
+        "college": "Suryodaya College Of Engineering and Technology",
+        "message": "Automated schedule reminders scanned and generated successfully"
+    }
 
 if __name__ == "__main__":
     import uvicorn

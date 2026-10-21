@@ -1,3 +1,4 @@
+import os
 import datetime
 import jwt
 import bcrypt
@@ -7,7 +8,8 @@ from sqlalchemy.orm import Session
 from app.database import get_db
 from app.models import User
 
-SECRET_KEY = "faculty_load_management_secret_key_2026_apex_engineering"
+# Load secure JWT secret from environment variable with fallback for development
+SECRET_KEY = os.environ.get("JWT_SECRET_KEY", "suryodaya_college_faculty_load_management_secret_key_2026")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7  # 7 days
 

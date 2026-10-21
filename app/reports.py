@@ -183,7 +183,7 @@ def generate_workload_pdf(db: Session, department: Optional[str] = None, academi
     elements = []
 
     # 1. Header Section
-    elements.append(Paragraph("APEX INSTITUTE OF ENGINEERING & TECHNOLOGY", title_style))
+    elements.append(Paragraph("SURYODAYA COLLEGE OF ENGINEERING & TECHNOLOGY", title_style))
     elements.append(Paragraph("FACULTY LOAD MANAGEMENT SYSTEM — DEPARTMENTAL WORKLOAD REPORT", subtitle_style))
     now_str = datetime.datetime.now().strftime("%d %b %Y, %I:%M %p")
     dept_label = department or "Computer Science & Engineering"

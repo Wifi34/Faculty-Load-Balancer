@@ -6,7 +6,7 @@ import uvicorn
 
 if __name__ == "__main__":
     print("=" * 70)
-    print("  FACULTY LOAD MANAGEMENT SYSTEM - APEX INSTITUTE OF TECH")
+    print("  FACULTY LOAD MANAGEMENT SYSTEM - SURYODAYA COLLEGE OF ENGG & TECH")
     print("=" * 70)
     print("  Starting server at http://127.0.0.1:8000")
     print("  HOD Login:     Username: hod_cs      | Password: admin123")
