@@ -3,9 +3,10 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-# SQLite Database
+# SQLite Database (allow baseline pre-seeded database)
 *.db
 *.sqlite3
+!faculty_load.db
 
 # Environments
 .env
