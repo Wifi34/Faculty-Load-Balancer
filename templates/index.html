@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Faculty Load Management System | Engineering College Portal</title>
+  
+  <!-- Modern Inter Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Chart.js for Interactive Workload Analytics -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+
+  <!-- ====================================================================
+       1. LOGIN VIEW (Role-Based: HOD or Faculty)
+       ==================================================================== -->
+  <div id="loginSection" class="login-page-wrap">
+    <div class="login-card">
+      <div class="login-brand">
+        <div class="login-logo">🎓</div>
+        <h2 class="login-title">Apex Institute of Technology</h2>
+        <p class="login-subtitle">Faculty Load Management System</p>
+      </div>
+
+      <!-- Quick Demo Account Switcher -->
+      <div class="demo-pills-box">
+        <div class="demo-pills-title">⚡ 1-Click Demo Accounts</div>
+        <div id="demoPillsContainer" class="demo-pills-list">
+          <!-- Populated by JavaScript -->
+        </div>
+      </div>
+
+      <div id="loginErrorBox" class="conflict-banner conflict-danger" style="display: none; margin-bottom: 16px;"></div>
+
+      <form id="loginForm" onsubmit="App.handleLoginForm(event)">
+        <div class="form-group">
+          <label class="form-label" for="loginUsername">Username / Faculty ID</label>
+          <input type="text" id="loginUsername" class="form-control" placeholder="e.g. hod_cs or prof_amit" required autofocus>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="loginPassword">Password</label>
+          <input type="password" id="loginPassword" class="form-control" placeholder="••••••••" required>
+        </div>
+
+        <button type="submit" id="loginSubmitBtn" class="btn btn-primary" style="width: 100%; padding: 11px; margin-top: 8px;">
+          Sign In to Portal
+        </button>
+      </form>
+
+      <div style="margin-top: 20px; font-size: 11.5px; color: #64748b; text-align: center; border-top: 1px solid #f1f5f9; padding-top: 14px;">
+        Role-based access control with secure encryption and automated reminder dispatch.
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       2. AUTHENTICATED APP SHELL
+       ==================================================================== -->
+  <div id="appShell" class="app-container" style="display: none;">
+    
+    <!-- Sidebar Navigation -->
+    <aside id="sidebar" class="sidebar">
+      <div class="sidebar-header">
+        <div class="college-badge">AIT</div>
+        <div class="college-info">
+          <h1>Faculty Load</h1>
+          <p>Engineering Portal</p>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <!-- HOD Specific Navigation -->
+        <div class="hod-only">
+          <div class="nav-section-label">HOD Administration</div>
+          <a class="nav-item active" data-view="view-hod-dashboard">
+            <span class="icon">📊</span>
+            <span>HOD Dashboard</span>
+          </a>
+          <a class="nav-item" data-view="view-workload-analytics">
+            <span class="icon">📈</span>
+            <span>Workload Analytics</span>
+          </a>
+          <a class="nav-item" data-view="view-assign-duty">
+            <span class="icon">➕</span>
+            <span>Assign Lecture/Duty</span>
+          </a>
+          <a class="nav-item" data-view="view-faculty-directory">
+            <span class="icon">👥</span>
+            <span>Faculty Directory</span>
+          </a>
+          <a class="nav-item" data-view="view-timetable">
+            <span class="icon">📅</span>
+            <span>Weekly Timetable</span>
+          </a>
+          <a class="nav-item" data-view="view-reports">
+            <span class="icon">📑</span>
+            <span>Workload Reports</span>
+          </a>
+          <a class="nav-item" data-view="view-audit-logs">
+            <span class="icon">📜</span>
+            <span>Audit History</span>
+          </a>
+        </div>
+
+        <!-- Faculty Specific Navigation -->
+        <div class="faculty-only" style="display: none;">
+          <div class="nav-section-label">Faculty Portal</div>
+          <a class="nav-item active" data-view="view-faculty-dashboard">
+            <span class="icon">📊</span>
+            <span>My Dashboard</span>
+          </a>
+          <a class="nav-item" data-view="view-timetable">
+            <span class="icon">📅</span>
+            <span>My Timetable</span>
+          </a>
+          <a class="nav-item" data-view="view-notifications">
+            <span class="icon">🔔</span>
+            <span>Notifications</span>
+          </a>
+          <a class="nav-item" data-view="view-profile">
+            <span class="icon">⚙️</span>
+            <span>Reminders & Profile</span>
+          </a>
+        </div>
+
+        <div class="nav-section-label">General</div>
+        <a class="nav-item" data-view="view-notifications">
+          <span class="icon">🔔</span>
+          <span>Notifications</span>
+        </a>
+        <a class="nav-item" data-view="view-profile">
+          <span class="icon">👤</span>
+          <span>My Profile</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-snippet">
+          <div id="sidebarUserAvatar" class="user-avatar">U</div>
+          <div class="user-snippet-details">
+            <div id="sidebarUserName" class="user-snippet-name">Dr. Rajesh Sharma</div>
+            <div id="sidebarUserRole" class="user-snippet-role">Head of Department</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+      
+      <!-- Top Navigation Bar -->
+      <header class="top-header">
+        <div class="header-left">
+          <button id="mobileMenuBtn" class="mobile-menu-btn">☰</button>
+          <div class="page-title">Faculty Load Management System</div>
+          <div class="dept-pill">
+            <span>🏛️</span>
+            <span>Dept: Computer Science & Engg</span>
+          </div>
+        </div>
+
+        <div class="header-right">
+          <!-- Manual Reminder Trigger for live testing -->
+          <button class="btn btn-sm btn-secondary" onclick="Notifications.triggerAutomatedScheduler()" title="Force check and generate pending automated reminders">
+            ⏰ Check Reminders
+          </button>
+          
+          <button class="btn btn-sm btn-secondary" onclick="Notifications.sendTestAlert()" title="Send test alert to test sound & browser notification">
+            🔔 Test Alert
+          </button>
+
+          <!-- Notification Bell Dropdown -->
+          <div class="notif-bell-container">
+            <button id="notifBellBtn" class="btn-icon" title="Notifications & Reminders">
+              <span>🔔</span>
+              <span id="notifBadge" class="notif-badge-count" style="display: none;">0</span>
+            </button>
+
+            <!-- Dropdown Menu -->
+            <div id="notifDropdown" class="notif-dropdown">
+              <div class="notif-dropdown-header">
+                <h4>Notifications & Reminders</h4>
+                <button id="notifMarkAllReadBtn" class="link-btn">Mark all read</button>
+              </div>
+              <div id="notifDropdownList" class="notif-dropdown-list">
+                <!-- Injected via JavaScript -->
+              </div>
+              <div class="notif-dropdown-footer">
+                <a href="#" class="link-btn" onclick="App.showView('view-notifications'); return false;">View all notifications</a>
+                <a href="#" class="link-btn" onclick="App.showView('view-profile'); return false;">Preferences</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- User Profile Details -->
+          <div class="header-user-btn" onclick="App.showView('view-profile')">
+            <span id="headerUserName" style="font-size: 13px; font-weight: 600;">Dr. Rajesh Sharma</span>
+            <span id="headerUserRole" class="badge badge-low" style="font-size: 10px;">HOD</span>
+          </div>
+
+          <button id="logoutBtn" class="btn-logout" title="Sign out">
+            <span>🚪</span>
+            <span>Logout</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Content Views Wrapper -->
+      <main class="content-wrapper">
+        
+        <!-- ==================================================================
+             VIEW: HOD DASHBOARD
+             ================================================================== -->
+        <section id="view-hod-dashboard" class="view-section active">
+          <!-- Summary Cards -->
+          <div class="kpi-grid">
+            <div class="kpi-card">
+              <div class="kpi-icon kpi-blue">👥</div>
+              <div class="kpi-body">
+                <div class="kpi-label">Total Faculty</div>
+                <div id="kpiTotalFaculty" class="kpi-value">6</div>
+                <div class="kpi-subtext">Active Department Staff</div>
+              </div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-icon kpi-green">📚</div>
+              <div class="kpi-body">
+                <div class="kpi-label">Lectures This Week</div>
+                <div id="kpiTotalLectures" class="kpi-value">32</div>
+                <div class="kpi-subtext">Regular & Lab Sessions</div>
+              </div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-icon kpi-red">🔥</div>
+              <div class="kpi-body">
+                <div class="kpi-label">Highest Teaching Load</div>
+                <div id="kpiHighestLoad" class="kpi-value">18.0 hrs</div>
+                <div id="kpiHighestFacultyName" class="kpi-subtext">Dr. Amit Verma</div>
+              </div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-icon kpi-purple">🌱</div>
+              <div class="kpi-body">
+                <div class="kpi-label">Lowest Teaching Load</div>
+                <div id="kpiLowestLoad" class="kpi-value">7.0 hrs</div>
+                <div id="kpiLowestFacultyName" class="kpi-subtext">Prof. Anita Desai</div>
+              </div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-icon kpi-amber">⚡</div>
+              <div class="kpi-body">
+                <div class="kpi-label">Available for Extra Duties</div>
+                <div id="kpiAvailableFaculty" class="kpi-value">2 Available</div>
+                <div class="kpi-subtext">Below threshold capacity</div>
+              </div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-icon kpi-blue">⚖️</div>
+              <div class="kpi-body">
+                <div class="kpi-label">Department Average</div>
+                <div id="kpiAvgLoad" class="kpi-value">12.5 hrs/wk</div>
+                <div class="kpi-subtext">Optimal Target: 14 hrs</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Charts & Upcoming Grid -->
+          <div class="charts-grid-2">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">📊 Faculty Teaching Load Distribution (Hours/Week)</h3>
+                <button class="btn btn-sm btn-outline-primary" onclick="App.showView('view-workload-analytics')">Full Analytics &rarr;</button>
+              </div>
+              <div class="chart-container">
+                <canvas id="dashboardWorkloadChart"></canvas>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">⏰ Upcoming Duties & Lectures</h3>
+                <span class="badge badge-low">This Week</span>
+              </div>
+              <div id="dashboardUpcomingDuties" style="display: flex; flex-direction: column; gap: 4px;">
+                <!-- Populated via JS -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Faculty Workload Table -->
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">📋 Faculty Workload & Allocation Directory</h3>
+              <button class="btn btn-primary" onclick="Assignments.openAssignmentModal()">
+                <span>➕</span>
+                <span>Assign Lecture / Duty</span>
+              </button>
+            </div>
+
+            <div class="table-filter-bar">
+              <div class="search-input-wrap">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="facultySearchInput" class="search-input" placeholder="Search faculty by name, code or subject..." oninput="Dashboard.filterFacultyTable()">
+              </div>
+
+              <div style="display: flex; gap: 10px; align-items: center;">
+                <label style="font-size: 13px; color: #64748b; font-weight: 600;">Workload Filter:</label>
+                <select id="facultyStatusFilter" class="select-filter" onchange="Dashboard.filterFacultyTable()">
+                  <option value="all">All Workload Statuses</option>
+                  <option value="high">⚠️ High Workload (Overburdened)</option>
+                  <option value="balanced">✓ Balanced Workload</option>
+                  <option value="low">⚡ Low Workload (Available for extra duties)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Faculty Name & Code</th>
+                    <th>Department</th>
+                    <th>Subjects</th>
+                    <th style="text-align: center;">Weekly Lectures</th>
+                    <th style="text-align: center;">Assigned Duties</th>
+                    <th>Total Load & Status</th>
+                    <th>Available Slots</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="facultyWorkloadTableBody">
+                  <!-- Injected via JavaScript -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================================================================
+             VIEW: FACULTY PERSONAL DASHBOARD (For Logged In Faculty)
+             ================================================================== -->
+        <section id="view-faculty-dashboard" class="view-section">
+          <div class="card" style="background: linear-gradient(135deg, #1e3a8a, #172554); color: white; padding: 26px;">
+            <h2 style="font-size: 22px; font-weight: 800;">Welcome to Your Faculty Portal</h2>
+            <p style="color: #cbd5e1; font-size: 13.5px; margin-top: 4px;">
+              View your personalized weekly teaching timetable, assigned examination/college duties, and real-time reminders.
+            </p>
+          </div>
+
+          <div class="kpi-grid">
+            <div class="kpi-card">
+              <div class="kpi-icon kpi-blue">⏱️</div>
+              <div class="kpi-body">
+                <div class="kpi-label">Your Total Weekly Load</div>
+                <div id="facMyTotalLoad" class="kpi-value">14.0 hrs</div>
+                <div class="kpi-subtext">Teaching & duties combined</div>
+              </div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-icon kpi-green">📖</div>
+              <div class="kpi-body">
+                <div class="kpi-label">Scheduled Lectures</div>
+                <div id="facMyLectureCount" class="kpi-value">10</div>
+                <div class="kpi-subtext">Theory & Lab classes</div>
+              </div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-icon kpi-purple">🛡️</div>
+              <div class="kpi-body">
+                <div class="kpi-label">Assigned Duties</div>
+                <div id="facMyDutyCount" class="kpi-value">2</div>
+                <div class="kpi-subtext">Exam & College duties</div>
+              </div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-icon kpi-amber">📅</div>
+              <div class="kpi-body">
+                <div class="kpi-label">Free Slots Remaining</div>
+                <div id="facMyAvailableSlots" class="kpi-value">28 slots</div>
+                <div class="kpi-subtext">Available for prep/research</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Progress Bar -->
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">📊 Your Teaching Load Progress</h3>
+              <span id="facLoadPctLabel" class="badge badge-balanced">75% of limit</span>
+            </div>
+            <div style="background: #e2e8f0; height: 14px; border-radius: 999px; overflow: hidden; margin-top: 8px;">
+              <div id="facLoadProgressBar" style="width: 75%; height: 100%; background: #2563eb; transition: width 0.5s ease;"></div>
+            </div>
+          </div>
+
+          <!-- Upcoming Duties for Faculty -->
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">⏰ Your Upcoming Assigned Lectures & Duties</h3>
+              <button class="btn btn-sm btn-primary" onclick="App.showView('view-timetable')">View My Timetable &rarr;</button>
+            </div>
+            <div id="facUpcomingDutiesList">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================================================================
+             VIEW: WORKLOAD COMPARISON & ANALYTICS
+             ================================================================== -->
+        <section id="view-workload-analytics" class="view-section">
+          <div class="card-header" style="margin-bottom: 20px;">
+            <div>
+              <h2 style="font-size: 20px; font-weight: 800; color: #0f172a;">Faculty Workload Comparison & Balance Engine</h2>
+              <p style="font-size: 13px; color: #64748b;">Compare weekly teaching hours across all faculty members and identify availability for additional duties or substitutions.</p>
+            </div>
+          </div>
+
+          <div class="charts-grid-2">
+            <div class="card">
+              <h3 class="card-title" style="margin-bottom: 16px;">📊 Stacked Teaching Load Breakdown by Faculty</h3>
+              <div class="chart-container" style="height: 320px;">
+                <canvas id="analyticsComparisonChart"></canvas>
+              </div>
+            </div>
+
+            <div class="card">
+              <h3 class="card-title" style="margin-bottom: 16px;">⚖️ Department Workload Health</h3>
+              <div class="chart-container" style="height: 320px;">
+                <canvas id="analyticsBreakdownChart"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- Available Faculty Finder -->
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">⚡ Available Faculty for Additional Duties & Substitutions</h3>
+              <span class="badge badge-low">Ranked by lowest teaching load</span>
+            </div>
+            <p style="font-size: 13px; color: #64748b; margin-bottom: 16px;">
+              These faculty members have teaching loads significantly below their weekly limit and are prime candidates for substitute lectures, examination invigilation, or special administrative duties.
+            </p>
+            <div id="availableFacultyList">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================================================================
+             VIEW: LECTURE AND DUTY ASSIGNMENT (HOD Only)
+             ================================================================== -->
+        <section id="view-assign-duty" class="view-section">
+          <div class="card" style="max-width: 800px; margin: 0 auto;">
+            <div class="card-header">
+              <div>
+                <h2 style="font-size: 18px; font-weight: 700; color: #0f172a;">Lecture & Duty Assignment Portal</h2>
+                <p style="font-size: 12.5px; color: #64748b;">Assign regular lectures, substitute lectures, lab sessions, and exam duties with live clash detection.</p>
+              </div>
+            </div>
+
+            <!-- Live Conflict Warning Banner -->
+            <div id="liveConflictBanner" class="conflict-banner conflict-success" style="display: none;">
+              <!-- Injected by JavaScript -->
+            </div>
+
+            <form id="assignDutyForm" onsubmit="Assignments.handleAssignmentSubmit(event)">
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label class="form-label">Faculty Member *</label>
+                  <select id="assignFacultySelect" class="form-control" required>
+                    <!-- Populated by JS -->
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Duty / Schedule Type *</label>
+                  <select id="assignScheduleType" class="form-control" required>
+                    <option value="regular_lecture">Regular Lecture</option>
+                    <option value="substitute_lecture">Substitute Lecture</option>
+                    <option value="lab_duty">Laboratory Practical Duty</option>
+                    <option value="exam_duty">Examination Invigilation</option>
+                    <option value="college_duty">Other College Duty (NAAC, Fest, etc.)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label class="form-label">Subject</label>
+                  <select id="assignSubjectSelect" class="form-control">
+                    <!-- Populated by JS -->
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Class / Semester Section</label>
+                  <select id="assignClassSelect" class="form-control">
+                    <!-- Populated by JS -->
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label class="form-label">Date *</label>
+                  <input type="date" id="assignDate" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Day of Week *</label>
+                  <input type="text" id="assignDayOfWeek" class="form-control" readonly style="background: #f8fafc;">
+                </div>
+              </div>
+
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label class="form-label">Start Time *</label>
+                  <input type="time" id="assignStartTime" class="form-control" value="09:00" required>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">End Time *</label>
+                  <input type="time" id="assignEndTime" class="form-control" value="10:00" required>
+                </div>
+              </div>
+
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label class="form-label">Classroom or Laboratory *</label>
+                  <select id="assignRoomSelect" class="form-control" required>
+                    <!-- Populated by JS -->
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Automated Reminder Preference</label>
+                  <select id="assignReminderMinutes" class="form-control">
+                    <option value="5">5 minutes before</option>
+                    <option value="15" selected>15 minutes before (Recommended)</option>
+                    <option value="30">30 minutes before</option>
+                    <option value="60">1 hour before</option>
+                    <option value="1440">1 day before</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Duty Title / Specific Topic</label>
+                <input type="text" id="assignDutyTitle" class="form-control" placeholder="e.g. Mid-Term Examination Chief Invigilator or Unit 3 Lecture">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Additional Instructions for Faculty</label>
+                <textarea id="assignInstructions" class="form-control" rows="3" placeholder="Enter special guidelines, question paper collection instructions, syllabus targets, etc."></textarea>
+              </div>
+
+              <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 20px;">
+                <button type="reset" class="btn btn-secondary">Reset Form</button>
+                <button type="submit" id="assignSubmitBtn" class="btn btn-primary">Confirm & Assign Duty</button>
+              </div>
+            </form>
+          </div>
+        </section>
+
+        <!-- ==================================================================
+             VIEW: WEEKLY TIMETABLE MATRIX (Mon to Sat)
+             ================================================================== -->
+        <section id="view-timetable" class="view-section">
+          <div class="timetable-filter-bar">
+            <div>
+              <h2 style="font-size: 18px; font-weight: 700; color: #0f172a;">Weekly Academic Timetable</h2>
+              <p style="font-size: 12.5px; color: #64748b;">Monday to Saturday lecture sessions, labs, and duty slots.</p>
+            </div>
+
+            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+              <!-- Faculty Filter -->
+              <select id="timetableFacultySelect" class="select-filter" onchange="Timetable.loadTimetable()">
+                <option value="">All Faculty</option>
+              </select>
+
+              <!-- Room Filter -->
+              <select id="timetableRoomSelect" class="select-filter" onchange="Timetable.loadTimetable()">
+                <option value="">All Rooms</option>
+              </select>
+
+              <!-- Subject Filter -->
+              <select id="timetableSubjectSelect" class="select-filter" onchange="Timetable.loadTimetable()">
+                <option value="">All Subjects</option>
+              </select>
+
+              <button class="btn btn-secondary btn-sm" onclick="Timetable.printTimetable()" title="Print timetable">
+                🖨️ Print
+              </button>
+              <a id="downloadPdfTimetableBtn" href="/api/reports/export/pdf" class="btn btn-primary btn-sm" title="Download PDF format">
+                📥 PDF
+              </a>
+            </div>
+          </div>
+
+          <!-- Color Coding Legend -->
+          <div style="display: flex; gap: 12px; margin-bottom: 14px; flex-wrap: wrap; font-size: 12px; font-weight: 600;">
+            <span class="badge badge-regular">■ Regular Lecture</span>
+            <span class="badge badge-lab">■ Practical Lab</span>
+            <span class="badge badge-substitute">■ Substitute Lecture</span>
+            <span class="badge badge-exam">■ Exam Duty</span>
+            <span class="badge badge-college">■ College Duty</span>
+          </div>
+
+          <div id="timetableGridContainer" class="timetable-grid-wrapper">
+            <!-- Table matrix injected via JavaScript -->
+          </div>
+        </section>
+
+        <!-- ==================================================================
+             VIEW: FACULTY DIRECTORY & PROFILES (HOD Only)
+             ================================================================== -->
+        <section id="view-faculty-directory" class="view-section">
+          <div class="card-header" style="margin-bottom: 20px;">
+            <div>
+              <h2 style="font-size: 20px; font-weight: 800; color: #0f172a;">Faculty Profiles & Directory</h2>
+              <p style="font-size: 13px; color: #64748b;">Manage academic credentials, designations, subject allocations, and weekly teaching limits.</p>
+            </div>
+            <button class="btn btn-primary" onclick="FacultyManager.openAddModal()">
+              <span>➕</span>
+              <span>Add New Faculty</span>
+            </button>
+          </div>
+
+          <div class="table-filter-bar">
+            <div class="search-input-wrap" style="max-width: 380px;">
+              <span class="search-icon">🔍</span>
+              <input type="text" id="directorySearchInput" class="search-input" placeholder="Search by name, code, designation, subject..." oninput="FacultyManager.filterFacultyDirectory()">
+            </div>
+          </div>
+
+          <div id="facultyDirectoryGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px;">
+            <!-- Populated via JavaScript -->
+          </div>
+        </section>
+
+        <!-- ==================================================================
+             VIEW: REPORTS & EXPORTS
+             ================================================================== -->
+        <section id="view-reports" class="view-section">
+          <div class="report-actions-box">
+            <div class="report-actions-text">
+              <h3>Official Departmental Workload Reports</h3>
+              <p>Generate certified weekly and monthly teaching load statements, duty distribution, and departmental compliance documents.</p>
+            </div>
+            <div class="report-btn-group">
+              <a id="downloadExcelBtn" href="/api/reports/export/excel" class="btn btn-success" download>
+                📊 Export Excel (.xlsx)
+              </a>
+              <a id="downloadPdfBtn" href="/api/reports/export/pdf" class="btn btn-secondary" target="_blank">
+                📑 Export PDF (.pdf)
+              </a>
+            </div>
+          </div>
+
+          <div id="reportMetricsSummary">
+            <!-- Injected via JavaScript -->
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Institutional Report Details</h3>
+              <span class="badge badge-low">Engineering Accreditation Standard</span>
+            </div>
+            <p style="font-size: 13.5px; color: #475569; line-height: 1.6;">
+              This report compiles complete metrics required for academic audits, NBA/NAAC accreditation, and Dean Academics review. 
+              The generated PDF includes institutional letterheads, faculty-by-faculty workload tables, duty breakdown, and signature verification sections.
+            </p>
+          </div>
+        </section>
+
+        <!-- ==================================================================
+             VIEW: NOTIFICATIONS CENTER
+             ================================================================== -->
+        <section id="view-notifications" class="view-section">
+          <div class="card-header" style="margin-bottom: 20px;">
+            <div>
+              <h2 style="font-size: 20px; font-weight: 800; color: #0f172a;">Notifications & Automated Reminders</h2>
+              <p style="font-size: 13px; color: #64748b;">Record of all lecture assignments, schedule modifications, and time-based automated reminders.</p>
+            </div>
+            <div style="display: flex; gap: 10px;">
+              <button class="btn btn-secondary btn-sm" onclick="Notifications.triggerAutomatedScheduler()">
+                ⏰ Trigger Scheduler Now
+              </button>
+              <button class="btn btn-primary btn-sm" onclick="Notifications.markAllAsRead()">
+                Mark All as Read
+              </button>
+            </div>
+          </div>
+
+          <div id="notifPageList">
+            <!-- Populated via JavaScript -->
+          </div>
+        </section>
+
+        <!-- ==================================================================
+             VIEW: AUDIT LOGS (HOD Only)
+             ================================================================== -->
+        <section id="view-audit-logs" class="view-section">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2 style="font-size: 18px; font-weight: 700; color: #0f172a;">System Audit History & Activity Logs</h2>
+                <p style="font-size: 12.5px; color: #64748b;">Complete historical trace of all duty assignments, timetable changes, and automated reminder triggers.</p>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Log ID</th>
+                    <th>Action</th>
+                    <th>Entity</th>
+                    <th>Details</th>
+                    <th>Timestamp & User</th>
+                  </tr>
+                </thead>
+                <tbody id="auditLogsTableBody">
+                  <!-- Populated via JavaScript -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================================================================
+             VIEW: PROFILE & REMINDER PREFERENCES
+             ================================================================== -->
+        <section id="view-profile" class="view-section">
+          <div class="form-grid-2">
+            <!-- Profile Info -->
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">👤 User & Faculty Profile</h3>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 12px; font-size: 13.5px;">
+                <div>
+                  <label class="form-label">Full Name</label>
+                  <div id="profileFullName" style="font-weight: 700; color: #0f172a;"></div>
+                </div>
+                <div>
+                  <label class="form-label">Username</label>
+                  <div id="profileUsername" style="color: #64748b;"></div>
+                </div>
+                <div>
+                  <label class="form-label">Email Address</label>
+                  <div id="profileEmail" style="color: #2563eb;"></div>
+                </div>
+                <div>
+                  <label class="form-label">System Role</label>
+                  <div id="profileRole" class="badge badge-low" style="width: fit-content;"></div>
+                </div>
+                <div>
+                  <label class="form-label">Department</label>
+                  <div id="profileDept" style="color: #334155;">Computer Science & Engineering</div>
+                </div>
+                <div>
+                  <label class="form-label">Designation</label>
+                  <div id="profileDesignation" style="color: #334155;">-</div>
+                </div>
+                <div>
+                  <label class="form-label">Faculty Code</label>
+                  <div id="profileCode" style="color: #64748b;">-</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Reminder Preferences Configurator -->
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">⏰ Configurable Reminder Preferences</h3>
+              </div>
+              <p style="font-size: 13px; color: #64748b; margin-bottom: 18px;">
+                Configure automatic notifications for upcoming lectures and duties according to college rules. Reminders are dispatched in the background automatically.
+              </p>
+
+              <form onsubmit="App.saveReminderPreferences(event)">
+                <div class="form-group">
+                  <label class="form-label">Reminder Lead Time</label>
+                  <select id="prefLeadTime" class="form-control">
+                    <option value="5">5 minutes before</option>
+                    <option value="15">15 minutes before (Default)</option>
+                    <option value="30">30 minutes before</option>
+                    <option value="60">1 hour before</option>
+                    <option value="1440">1 day before</option>
+                  </select>
+                  <div class="form-hint">Specifies when the automated background scheduler generates alert notifications.</div>
+                </div>
+
+                <div class="form-group" style="margin-top: 16px;">
+                  <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; font-weight: 600; cursor: pointer;">
+                    <input type="checkbox" id="prefBrowserToggle" checked style="width: 16px; height: 16px;">
+                    <span>Enable Browser Push Notifications</span>
+                  </label>
+                  <div class="form-hint">Shows desktop notifications on your device.</div>
+                </div>
+
+                <div class="form-group" style="margin-top: 12px;">
+                  <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; font-weight: 600; cursor: pointer;">
+                    <input type="checkbox" id="prefEmailToggle" checked style="width: 16px; height: 16px;">
+                    <span>Enable Simulated Email Reminders</span>
+                  </label>
+                  <div class="form-hint">Dispatches automated email notifications to your registered college email.</div>
+                </div>
+
+                <div style="margin-top: 24px;">
+                  <button type="submit" class="btn btn-primary">Save Reminder Preferences</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       MODALS
+       ==================================================================== -->
+
+  <!-- Modal: Assign Duty (Quick Dialog) -->
+  <div id="assignDutyModal" class="modal-overlay">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="modal-title">Assign Lecture or Duty</h3>
+        <button class="modal-close-btn modal-close-trigger">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 12.5px; color: #64748b; margin-bottom: 16px;">
+          Select assignment parameters below. The system checks timetable overlaps in real time.
+        </p>
+        <button class="btn btn-primary" onclick="App.showView('view-assign-duty'); document.getElementById('assignDutyModal').classList.remove('show');">
+          Open Full Assignment Form with Conflict Radar &rarr;
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Schedule Slot Details -->
+  <div id="scheduleDetailsModal" class="modal-overlay">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 id="slotDetailTitle" class="modal-title">Lecture Details</h3>
+        <button class="modal-close-btn modal-close-trigger">&times;</button>
+      </div>
+      <div class="modal-body" style="font-size: 13.5px;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+          <span style="color: #64748b;">Schedule Type:</span>
+          <span id="slotDetailType" class="badge badge-regular">REGULAR LECTURE</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+          <span style="color: #64748b;">Faculty:</span>
+          <strong id="slotDetailFaculty"></strong>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+          <span style="color: #64748b;">Timing:</span>
+          <strong id="slotDetailTime"></strong>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+          <span style="color: #64748b;">Classroom / Lab:</span>
+          <span id="slotDetailRoom"></span>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+          <span style="color: #64748b;">Class / Section:</span>
+          <span id="slotDetailClass"></span>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 14px;">
+          <span style="color: #64748b;">Date:</span>
+          <span id="slotDetailDate"></span>
+        </div>
+        <div style="background: #f8fafc; border-radius: 8px; padding: 12px; border: 1px solid #e2e8f0;">
+          <div style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase;">Instructions from HOD:</div>
+          <div id="slotDetailInstructions" style="margin-top: 4px; color: #334155;"></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary modal-close-trigger">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Add New Faculty -->
+  <div id="addFacultyModal" class="modal-overlay">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="modal-title">Add New Faculty Member</h3>
+        <button class="modal-close-btn modal-close-trigger">&times;</button>
+      </div>
+      <form id="addFacultyForm" onsubmit="FacultyManager.handleAddFaculty(event)">
+        <div class="modal-body">
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label">Faculty Code *</label>
+              <input type="text" id="newFacCode" class="form-control" placeholder="e.g. FAC-CS-007" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Full Name *</label>
+              <input type="text" id="newFacName" class="form-control" placeholder="e.g. Dr. K. Raman" required>
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label">Department *</label>
+              <input type="text" id="newFacDept" class="form-control" value="Computer Science & Engineering" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Designation *</label>
+              <select id="newFacDesignation" class="form-control" required>
+                <option value="Professor">Professor</option>
+                <option value="Associate Professor">Associate Professor</option>
+                <option value="Assistant Professor" selected>Assistant Professor</option>
+                <option value="Lecturer">Lecturer</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label">College Email *</label>
+              <input type="email" id="newFacEmail" class="form-control" placeholder="raman@college.edu" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Contact Phone</label>
+              <input type="text" id="newFacPhone" class="form-control" placeholder="+91 98765 00000">
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label">Cabin / Office Room</label>
+              <input type="text" id="newFacCabin" class="form-control" placeholder="Cabin 310, CS Block">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Weekly Lecture Limit (Hours)</label>
+              <input type="number" id="newFacLimit" class="form-control" value="16" min="6" max="30">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Subjects Taught</label>
+            <textarea id="newFacSubjects" class="form-control" rows="2" placeholder="e.g. Compiler Design, Automata Theory"></textarea>
+          </div>
+          <div class="form-hint">A login account will be automatically generated with default password <code>faculty123</code>.</div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary modal-close-trigger">Cancel</button>
+          <button type="submit" class="btn btn-primary">Create Faculty Profile</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Edit Faculty -->
+  <div id="editFacultyModal" class="modal-overlay">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="modal-title">Edit Faculty Details</h3>
+        <button class="modal-close-btn modal-close-trigger">&times;</button>
+      </div>
+      <form id="editFacultyForm" onsubmit="FacultyManager.handleEditFaculty(event)">
+        <input type="hidden" id="editFacId">
+        <div class="modal-body">
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label">Full Name *</label>
+              <input type="text" id="editFacName" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Designation *</label>
+              <select id="editFacDesignation" class="form-control" required>
+                <option value="Professor">Professor</option>
+                <option value="Associate Professor">Associate Professor</option>
+                <option value="Assistant Professor">Assistant Professor</option>
+                <option value="Lecturer">Lecturer</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label">Email *</label>
+              <input type="email" id="editFacEmail" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Phone</label>
+              <input type="text" id="editFacPhone" class="form-control">
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label">Cabin Room</label>
+              <input type="text" id="editFacCabin" class="form-control">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Weekly Lecture Limit (Hours)</label>
+              <input type="number" id="editFacLimit" class="form-control" min="6" max="30">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Subjects Taught</label>
+            <textarea id="editFacSubjects" class="form-control" rows="2"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary modal-close-trigger">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div id="toastContainer" style="position: fixed; bottom: 24px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 8px;"></div>
+
+  <!-- Application Scripts -->
+  <script src="/static/js/api.js"></script>
+  <script src="/static/js/dashboard.js"></script>
+  <script src="/static/js/timetable.js"></script>
+  <script src="/static/js/assignments.js"></script>
+  <script src="/static/js/notifications.js"></script>
+  <script src="/static/js/faculty.js"></script>
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
