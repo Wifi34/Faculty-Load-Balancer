@@ -22,6 +22,7 @@ const App = {
         this.setupAuthenticatedUI();
       } catch (err) {
         console.warn('Stored token invalid, showing login screen');
+        API.removeToken();
         this.showLogin();
       }
     } else {
@@ -74,8 +75,18 @@ const App = {
 
   showLogin() {
     this.stopPolling();
-    document.getElementById('appShell').style.display = 'none';
-    document.getElementById('loginSection').style.display = 'flex';
+    const appShell = document.getElementById('appShell');
+    const loginSec = document.getElementById('loginSection');
+    if (appShell) {
+      appShell.classList.remove('active');
+      appShell.classList.add('hidden');
+      appShell.style.setProperty('display', 'none', 'important');
+    }
+    if (loginSec) {
+      loginSec.classList.remove('hidden');
+      loginSec.style.setProperty('display', 'block', 'important');
+    }
+    window.scrollTo(0, 0);
     this.renderDemoAccountPills();
   },
 
@@ -86,15 +97,15 @@ const App = {
     try {
       const accounts = await API.getDemoAccounts();
       container.innerHTML = accounts.map(acc => `
-        <button class="demo-pill-btn" onclick="App.fillDemoLogin('${acc.username}', '${acc.password}')" title="${acc.title} - ${acc.description}">
+        <button type="button" class="scet-demo-btn demo-pill-btn" onclick="App.fillDemoLogin('${acc.username}', '${acc.password}')" title="${acc.title} - ${acc.description}">
           <strong>${acc.role}</strong> (${acc.username})
         </button>
       `).join('');
     } catch (err) {
       container.innerHTML = `
-        <button class="demo-pill-btn" onclick="App.fillDemoLogin('hod_cs', 'admin123')">HOD (hod_cs)</button>
-        <button class="demo-pill-btn" onclick="App.fillDemoLogin('prof_amit', 'faculty123')">Faculty High Load (prof_amit)</button>
-        <button class="demo-pill-btn" onclick="App.fillDemoLogin('prof_vikram', 'faculty123')">Faculty Available (prof_vikram)</button>
+        <button type="button" class="scet-demo-btn demo-pill-btn" onclick="App.fillDemoLogin('hod_cs', 'admin123')">HOD (hod_cs)</button>
+        <button type="button" class="scet-demo-btn demo-pill-btn" onclick="App.fillDemoLogin('prof_amit', 'faculty123')">Faculty Overloaded (prof_amit)</button>
+        <button type="button" class="scet-demo-btn demo-pill-btn" onclick="App.fillDemoLogin('prof_vikram', 'faculty123')">Faculty Available (prof_vikram)</button>
       `;
     }
   },
@@ -135,23 +146,50 @@ const App = {
       }
     } finally {
       submitBtn.disabled = false;
-      submitBtn.textContent = 'Sign In to Portal';
+      submitBtn.textContent = 'Sign In to Academic Portal →';
     }
   },
 
   setupAuthenticatedUI() {
-    document.getElementById('loginSection').style.display = 'none';
-    document.getElementById('appShell').style.display = 'flex';
+    if (typeof window.closeLoginModal === 'function') {
+      window.closeLoginModal();
+    }
+    const loginSec = document.getElementById('loginSection');
+    const appShell = document.getElementById('appShell');
+    if (loginSec) {
+      loginSec.classList.add('hidden');
+      loginSec.style.setProperty('display', 'none', 'important');
+    }
+    if (appShell) {
+      appShell.classList.remove('hidden');
+      appShell.classList.add('active');
+      appShell.style.setProperty('display', 'flex', 'important');
+    }
+    window.scrollTo(0, 0);
 
     // Populate user profile info in header and sidebar
     const user = this.currentUser;
     const isHod = user.role === 'hod';
 
-    document.getElementById('headerUserName').textContent = user.full_name;
-    document.getElementById('headerUserRole').textContent = isHod ? 'HOD (Administrator)' : 'Faculty Member';
-    document.getElementById('sidebarUserName').textContent = user.full_name;
-    document.getElementById('sidebarUserRole').textContent = isHod ? 'Head of Department' : (user.faculty_details ? user.faculty_details.designation : 'Faculty');
-    document.getElementById('sidebarUserAvatar').textContent = user.full_name.charAt(0);
+    const headerName = document.getElementById('headerUserName');
+    if (headerName) headerName.textContent = user.full_name;
+
+    const headerRole = document.getElementById('headerUserRole');
+    if (headerRole) {
+      headerRole.textContent = isHod ? 'HOD (Administrator)' : 'Faculty Member';
+      headerRole.className = isHod ? 'badge badge-primary' : 'badge badge-low';
+    }
+
+    const sideName = document.getElementById('sidebarUserName');
+    if (sideName) sideName.textContent = user.full_name;
+
+    const sideRole = document.getElementById('sidebarUserRole');
+    if (sideRole) {
+      sideRole.textContent = isHod ? 'Head of Department' : (user.faculty_details ? user.faculty_details.designation : 'Faculty');
+    }
+
+    const sideAvatar = document.getElementById('sidebarUserAvatar');
+    if (sideAvatar) sideAvatar.textContent = user.full_name.charAt(0);
 
     // Toggle Role-based Navigation Elements
     document.querySelectorAll('.hod-only').forEach(el => {
@@ -247,7 +285,11 @@ const App = {
     API.removeToken();
     this.currentUser = null;
     this.toast('You have been logged out safely.', 'info');
+    if (typeof window.closeLoginModal === 'function') {
+      window.closeLoginModal();
+    }
     this.showLogin();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   },
 
   requestNotificationPermission() {

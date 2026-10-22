@@ -3,402 +3,777 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Faculty Load Management System | Engineering College Portal</title>
+  <title>Suryodaya College of Engineering & Technology | Faculty Load Balancing & Academic Management</title>
+  <meta name="description" content="Intelligent faculty load balancing, conflict-aware timetable scheduling, and academic workload analytics for Suryodaya College of Engineering & Technology.">
   
-  <!-- Modern Inter Typography -->
+  <!-- Premium Typography: Plus Jakarta Sans (Headings) & Inter (Body) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
   
   <!-- Chart.js for Interactive Workload Analytics -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
 
-  <!-- Custom Stylesheet -->
+  <!-- Authenticated Portal Stylesheet -->
   <link rel="stylesheet" href="/static/css/styles.css">
+
+  <!-- SCET Design System Landing Stylesheet -->
+  <link rel="stylesheet" href="/static/css/landing.css">
 </head>
 <body>
 
   <!-- ====================================================================
-       1. GRAND INSTITUTIONAL LANDING PAGE & PORTAL GATEWAY
+       1. SCET INSTITUTIONAL LANDING PAGE & PORTAL GATEWAY
        ==================================================================== -->
-  <div id="loginSection" class="lp-wrapper">
-    <!-- Modern Sticky Navigation Bar -->
-    <header class="lp-navbar">
-      <div class="lp-nav-container">
-        <a href="#" class="lp-brand">
-          <div class="lp-brand-logo">🎓</div>
-          <div class="lp-brand-text">
-            <span class="lp-brand-title">Suryodaya College</span>
-            <span class="lp-brand-sub">Of Engineering & Technology</span>
+  <div id="loginSection" class="scet-landing-wrap">
+
+    <!-- Sticky Navigation Bar -->
+    <header class="scet-navbar">
+      <div class="scet-container">
+        <div class="scet-nav-inner">
+          <a href="#hero" class="scet-brand">
+            <div class="scet-brand-crest">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+              </svg>
+            </div>
+            <div class="scet-brand-titles">
+              <span class="scet-brand-name">Suryodaya College of Engineering & Technology</span>
+              <span class="scet-brand-tag">Department of Computer Science & Engineering</span>
+            </div>
+          </a>
+
+          <nav class="scet-nav-menu">
+            <a href="#hero" class="scet-nav-link active">Home</a>
+            <a href="#platform" class="scet-nav-link">Platform</a>
+            <a href="#workflow" class="scet-nav-link">How It Works</a>
+            <a href="#simulator" class="scet-nav-link">Faculty Workload</a>
+            <a href="#timetable" class="scet-nav-link">Timetable</a>
+            <a href="#identity" class="scet-nav-link">About</a>
+          </nav>
+
+          <div class="scet-nav-actions">
+            <a href="#simulator" class="scet-btn scet-btn-ghost">Explore Live Demo</a>
+            <button type="button" class="scet-btn scet-btn-primary" onclick="openLoginModal()">Faculty / HOD Login</button>
+            <button type="button" id="scetHamburgerBtn" class="scet-hamburger" aria-label="Toggle navigation">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+              </svg>
+            </button>
           </div>
-        </a>
-        <nav class="lp-nav-links">
-          <a href="#lp-features" class="lp-nav-link">Platform Features</a>
-          <a href="#lp-balancer" class="lp-nav-link">AI Balancer</a>
-          <a href="#lp-conflict" class="lp-nav-link">Conflict Engine</a>
-          <a href="#lp-departments" class="lp-nav-link">Academic Blocks</a>
-        </nav>
-        <div class="lp-nav-actions">
-          <a href="#portalLoginCard" class="lp-btn lp-btn-outline" style="padding: 8px 16px; font-size: 13px;">⚡ 1-Click Demo</a>
-          <a href="#portalLoginCard" class="lp-btn lp-btn-primary" style="padding: 8px 18px; font-size: 13px;">Portal Sign In →</a>
+        </div>
+
+        <!-- Mobile Drawer -->
+        <div id="scetMobileMenu" class="scet-mobile-menu">
+          <a href="#hero" class="scet-nav-link">Home</a>
+          <a href="#platform" class="scet-nav-link">Platform</a>
+          <a href="#workflow" class="scet-nav-link">How It Works</a>
+          <a href="#simulator" class="scet-nav-link">Faculty Workload</a>
+          <a href="#timetable" class="scet-nav-link">Timetable</a>
+          <a href="#identity" class="scet-nav-link">About</a>
+          <div style="padding-top: 12px; display: flex; flex-direction: column; gap: 8px;">
+            <a href="#simulator" class="scet-btn scet-btn-ghost" style="text-align: center;">Explore Live Demo</a>
+            <button type="button" class="scet-btn scet-btn-primary" onclick="openLoginModal()" style="width: 100%;">Faculty / HOD Login</button>
+          </div>
         </div>
       </div>
     </header>
 
-    <!-- Hero Section -->
-    <section class="lp-hero">
-      <div class="lp-hero-container">
-        <!-- Hero Left: Value Proposition -->
-        <div class="lp-hero-content">
-          <div class="lp-badge">
-            <span class="lp-badge-dot"></span>
-            <span>Next-Gen Academic Load Balancer & Timetable System</span>
+    <!-- SECTION 4: HERO SECTION (Asymmetric Two-Column Layout) -->
+    <section id="hero" class="scet-hero">
+      <div class="scet-container">
+        <div class="scet-hero-grid">
+          <!-- Left Content -->
+          <div class="scet-hero-content">
+            <div class="scet-eyebrow">
+              <span class="scet-eyebrow-bullet"></span>
+              SMART CAMPUS • ACADEMIC INTELLIGENCE
+            </div>
+
+            <h1 class="scet-hero-title">
+              Smarter Faculty Allocation. <br>
+              <span class="scet-text-orange">Better Academic Management.</span>
+            </h1>
+
+            <p class="scet-hero-desc">
+              An intelligent academic management platform that simplifies faculty workload distribution, prevents timetable conflicts, and enables smarter departmental scheduling.
+            </p>
+
+            <div class="scet-hero-cta">
+              <a href="#simulator" class="scet-btn scet-btn-accent scet-btn-lg">Explore Live Demo →</a>
+              <button type="button" class="scet-btn scet-btn-ghost scet-btn-lg" onclick="openLoginModal()">Access Faculty Portal ↗</button>
+            </div>
+
+            <!-- Horizontal Feature Strip -->
+            <div class="scet-hero-strip">
+              <div class="scet-strip-item">
+                <span class="scet-strip-icon">⚡</span>
+                <span>Smart Workload Allocation</span>
+              </div>
+              <div class="scet-strip-item">
+                <span class="scet-strip-icon">🛡️</span>
+                <span>Conflict-Aware Scheduling</span>
+              </div>
+              <div class="scet-strip-item">
+                <span class="scet-strip-icon">📊</span>
+                <span>Real-Time Academic Insights</span>
+              </div>
+            </div>
           </div>
-          <h1 class="lp-hero-title">
-            Intelligent Faculty <br>
-            <span class="lp-gradient-text">Load Balancing</span> & <br>
-            Academic Portal
-          </h1>
-          <p class="lp-hero-desc">
-            Automated conflict-free lecture scheduling, real-time lab allocation, equitable faculty teaching hour distribution, and instant NAAC-compliant reporting for Suryodaya College of Engineering & Technology.
+
+          <!-- Right Visual Composition -->
+          <div class="scet-hero-composition">
+            <!-- Campus Frame with Verified Institutional Image -->
+            <div class="scet-campus-frame">
+              <img src="/static/images/scet_campus_hero.jpg" alt="Suryodaya College of Engineering & Technology Campus" class="scet-campus-img">
+              <div class="scet-campus-overlay">
+                <div class="scet-campus-badge">
+                  <span class="scet-campus-dot"></span>
+                  Suryodaya College of Engineering & Technology
+                </div>
+              </div>
+            </div>
+
+            <!-- Floating Card 1: Faculty Workload -->
+            <div class="scet-floating-card scet-card-workload">
+              <div class="scet-float-icon scet-icon-orange">⏱️</div>
+              <div class="scet-float-content">
+                <span class="scet-float-label">Faculty Workload</span>
+                <span class="scet-float-title">Dr. Amit Verma — 18 / 16 hrs</span>
+                <span class="scet-status-pill scet-pill-overload">Status: Overloaded</span>
+              </div>
+            </div>
+
+            <!-- Floating Card 2: Schedule Conflict -->
+            <div class="scet-floating-card scet-card-conflict">
+              <div class="scet-float-icon scet-icon-green">🛡️</div>
+              <div class="scet-float-content">
+                <span class="scet-float-label">Schedule Conflict</span>
+                <span class="scet-float-title">No active conflicts</span>
+                <span class="scet-status-pill scet-pill-success">✓ Zero Collisions</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 5: INTERACTIVE FACULTY WORKLOAD SIMULATOR -->
+    <section id="simulator" class="scet-section scet-section-alt">
+      <div class="scet-container">
+        <div class="scet-section-header">
+          <span class="scet-tag">Interactive Load Balancer</span>
+          <h2 class="scet-title">See Intelligent Workload Balancing in Action</h2>
+          <p class="scet-subtitle">
+            Experience how faculty workloads can be redistributed to support more balanced academic scheduling.
           </p>
+        </div>
 
-          <!-- Real-Time Metrics Chips -->
-          <div class="lp-hero-stats">
-            <div class="lp-stat-chip">
-              <div class="lp-stat-num">100%</div>
-              <div class="lp-stat-label">Conflict-Free Slots</div>
+        <div class="scet-simulator-card">
+          <div class="scet-sim-header">
+            <div class="scet-sim-header-info">
+              <h4>Department Workload Allocation Simulator</h4>
+              <p>Standard Departmental Limit: 16 teaching hours / week per faculty member</p>
             </div>
-            <div class="lp-stat-chip">
-              <div class="lp-stat-num">16 hrs</div>
-              <div class="lp-stat-label">Standard Workload Limit</div>
+            <span class="scet-sim-badge">Live Interactive Engine • Demo Simulation</span>
+          </div>
+
+          <!-- 3 Faculty Profiles -->
+          <div class="scet-sim-profiles-grid">
+            <!-- Faculty 1: Dr. Amit Verma -->
+            <div id="simBox_amit" class="scet-sim-faculty-box">
+              <div class="scet-prof-top">
+                <div class="scet-prof-avatar scet-avatar-red">AV</div>
+                <div class="scet-prof-details">
+                  <div class="scet-prof-name">Dr. Amit Verma</div>
+                  <div class="scet-prof-designation">Professor (Machine Learning & DBMS)</div>
+                </div>
+              </div>
+              <div class="scet-load-indicator">
+                <div class="scet-load-text">
+                  <span>Weekly Load</span>
+                  <span id="simHours_amit" style="color: #EF4444; font-weight: 700;">18 / 16 hrs (112%)</span>
+                </div>
+                <div class="scet-load-bar-wrap">
+                  <div id="simBar_amit" class="scet-load-bar-inner" style="width: 100%; background-color: #EF4444;"></div>
+                </div>
+              </div>
+              <div style="margin-top: 14px;">
+                <span id="simBadge_amit" class="scet-status-pill scet-pill-overload">Overloaded (18h)</span>
+              </div>
             </div>
-            <div class="lp-stat-chip">
-              <div class="lp-stat-num">&lt;50ms</div>
-              <div class="lp-stat-label">Collision Detection</div>
+
+            <!-- Faculty 2: Prof. Priya Patel -->
+            <div id="simBox_priya" class="scet-sim-faculty-box">
+              <div class="scet-prof-top">
+                <div class="scet-prof-avatar scet-avatar-blue">PP</div>
+                <div class="scet-prof-details">
+                  <div class="scet-prof-name">Prof. Priya Patel</div>
+                  <div class="scet-prof-designation">Associate Professor (Networks & OS)</div>
+                </div>
+              </div>
+              <div class="scet-load-indicator">
+                <div class="scet-load-text">
+                  <span>Weekly Load</span>
+                  <span id="simHours_priya" style="color: #2563EB; font-weight: 700;">14 / 16 hrs (88%)</span>
+                </div>
+                <div class="scet-load-bar-wrap">
+                  <div id="simBar_priya" class="scet-load-bar-inner" style="width: 88%; background-color: #2563EB;"></div>
+                </div>
+              </div>
+              <div style="margin-top: 14px;">
+                <span id="simBadge_priya" class="scet-status-pill scet-pill-balanced">Balanced (14h)</span>
+              </div>
+            </div>
+
+            <!-- Faculty 3: Prof. Vikram Singh -->
+            <div id="simBox_vikram" class="scet-sim-faculty-box">
+              <div class="scet-prof-top">
+                <div class="scet-prof-avatar scet-avatar-green">VS</div>
+                <div class="scet-prof-details">
+                  <div class="scet-prof-name">Prof. Vikram Singh</div>
+                  <div class="scet-prof-designation">Assistant Professor (Algorithms & Arch)</div>
+                </div>
+              </div>
+              <div class="scet-load-indicator">
+                <div class="scet-load-text">
+                  <span>Weekly Load</span>
+                  <span id="simHours_vikram" style="color: #22A67A; font-weight: 700;">8 / 16 hrs (50%)</span>
+                </div>
+                <div class="scet-load-bar-wrap">
+                  <div id="simBar_vikram" class="scet-load-bar-inner" style="width: 50%; background-color: #22A67A;"></div>
+                </div>
+              </div>
+              <div style="margin-top: 14px;">
+                <span id="simBadge_vikram" class="scet-status-pill scet-pill-success">Available (8h)</span>
+              </div>
             </div>
           </div>
 
-          <!-- Hero Action CTAs -->
-          <div class="lp-hero-cta-group">
-            <a href="#portalLoginCard" class="lp-btn lp-btn-gradient">
-              <span>🚀 Access Portal Gateway</span>
-            </a>
-            <button type="button" class="lp-btn lp-btn-outline" onclick="App.fillDemoLogin('hod_cs', 'admin123')">
-              <span>⚡ Launch HOD Demo</span>
+          <!-- Simulator Action Controls -->
+          <div class="scet-sim-controls">
+            <button type="button" class="scet-btn scet-btn-ghost" onclick="simulateDuty()">
+              <span>⚡ Simulate New 3-Hour Duty</span>
+            </button>
+            <button type="button" class="scet-btn scet-btn-accent" onclick="runBalancer()">
+              <span>⚖️ Run Load Balancer</span>
+            </button>
+            <button type="button" class="scet-btn scet-btn-ghost" onclick="resetSimulator()">
+              <span>↺ Reset Simulation</span>
             </button>
           </div>
 
-          <div class="lp-accreditation-pill">
-            <span>🏛️ Approved by AICTE • Affiliated to University • Accredited by NAAC • ISO 9001:2015</span>
+          <!-- Dynamic Explanation Box -->
+          <div class="scet-sim-feedback-box">
+            <span id="simFeedbackIcon" class="scet-feedback-icon">ℹ️</span>
+            <div id="simFeedbackText" class="scet-feedback-text">
+              Default departmental configuration loaded: Dr. Amit Verma is currently overloaded (18 / 16 hrs). Click <strong>"Simulate New 3-Hour Duty"</strong> or <strong>"Run Load Balancer"</strong> to inspect automated redistribution.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 6: BEAUTIFUL DASHBOARD PREVIEW -->
+    <section id="platform" class="scet-section">
+      <div class="scet-container">
+        <div class="scet-section-header">
+          <span class="scet-tag">Unified Academic Dashboard</span>
+          <h2 class="scet-title">Everything Your Department Needs, In One Place.</h2>
+          <p class="scet-subtitle">
+            A comprehensive departmental control center designed for Heads of Departments, Academic Coordinators, and Faculty Members.
+          </p>
+        </div>
+
+        <div class="scet-dashboard-frame">
+          <div class="scet-dash-window">
+            <!-- Sidebar Preview -->
+            <div class="scet-dash-sidebar">
+              <div>
+                <div class="scet-dash-side-brand">
+                  <span style="font-size: 18px;">🎓</span>
+                  <span style="font-weight: 800; font-size: 14px; letter-spacing: -0.01em;">SCET Academic</span>
+                </div>
+                <div class="scet-dash-nav-list">
+                  <a href="javascript:void(0)" class="scet-dash-nav-item active">📊 Dashboard</a>
+                  <a href="javascript:void(0)" class="scet-dash-nav-item">👨‍🏫 Faculty Management</a>
+                  <a href="javascript:void(0)" class="scet-dash-nav-item">📈 Workload Analytics</a>
+                  <a href="javascript:void(0)" class="scet-dash-nav-item">🗓️ Weekly Timetable</a>
+                  <a href="javascript:void(0)" class="scet-dash-nav-item">🏛️ Academic Blocks</a>
+                  <a href="javascript:void(0)" class="scet-dash-nav-item">📄 NAAC Reports</a>
+                  <a href="javascript:void(0)" class="scet-dash-nav-item">⚙️ Settings</a>
+                </div>
+              </div>
+              <div style="font-size: 11px; color: #64748B; padding: 0 8px;">
+                SCET Portal v2.6 • Active
+              </div>
+            </div>
+
+            <!-- Main Content Area Preview -->
+            <div class="scet-dash-main">
+              <div class="scet-dash-topbar">
+                <div>
+                  <div class="scet-dash-title">Department of Computer Science & Engineering</div>
+                  <div class="scet-dash-meta">Semester: Odd 2026 | Campus Academic Block 2 | Faculty Roster</div>
+                </div>
+                <button type="button" class="scet-btn scet-btn-ghost" style="font-size: 12px; padding: 6px 12px;" onclick="openLoginModal()">Open Full System ↗</button>
+              </div>
+
+              <!-- KPI Metrics Row -->
+              <div class="scet-dash-kpis">
+                <div class="scet-dash-kpi">
+                  <div class="scet-dash-kpi-label">Total Faculty</div>
+                  <div class="scet-dash-kpi-val">18</div>
+                </div>
+                <div class="scet-dash-kpi">
+                  <div class="scet-dash-kpi-label">Assigned Hours</div>
+                  <div class="scet-dash-kpi-val">248 <span style="font-size: 13px; font-weight: 500; color: #64748B;">hrs</span></div>
+                </div>
+                <div class="scet-dash-kpi">
+                  <div class="scet-dash-kpi-label">Available Capacity</div>
+                  <div class="scet-dash-kpi-val" style="color: var(--color-success);">36 <span style="font-size: 13px; font-weight: 500; color: #64748B;">hrs</span></div>
+                </div>
+                <div class="scet-dash-kpi">
+                  <div class="scet-dash-kpi-label">Schedule Conflicts</div>
+                  <div class="scet-dash-kpi-val" style="color: var(--color-navy);">0 <span style="font-size: 12px; color: var(--color-success); font-weight: 600;">Active</span></div>
+                </div>
+              </div>
+
+              <!-- Two-Column Showcase Area -->
+              <div class="scet-dash-grid">
+                <!-- Mini Table: Faculty Workload Overview -->
+                <div class="scet-dash-table-card">
+                  <div class="scet-dash-table-head">
+                    <span>Department Faculty Load Distribution</span>
+                    <span style="font-size: 11px; color: var(--color-orange-dark); font-weight: 600;">Automated Equilibrium</span>
+                  </div>
+                  <table class="scet-dash-table">
+                    <thead>
+                      <tr>
+                        <th>Faculty Member</th>
+                        <th>Specialization</th>
+                        <th>Hours</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><strong>Dr. Amit Verma</strong></td>
+                        <td>Machine Learning & DBMS</td>
+                        <td>18 / 16 hrs</td>
+                        <td><span class="scet-status-pill scet-pill-overload">Overloaded</span></td>
+                        <td><button class="scet-btn scet-btn-ghost" style="padding: 3px 8px; font-size: 11px;" onclick="openLoginModal()">Rebalance</button></td>
+                      </tr>
+                      <tr>
+                        <td><strong>Prof. Priya Patel</strong></td>
+                        <td>Networks & OS</td>
+                        <td>14 / 16 hrs</td>
+                        <td><span class="scet-status-pill scet-pill-balanced">Balanced</span></td>
+                        <td><button class="scet-btn scet-btn-ghost" style="padding: 3px 8px; font-size: 11px;" onclick="openLoginModal()">Details</button></td>
+                      </tr>
+                      <tr>
+                        <td><strong>Prof. Vikram Singh</strong></td>
+                        <td>Algorithms & Arch</td>
+                        <td>8 / 16 hrs</td>
+                        <td><span class="scet-status-pill scet-pill-success">Available</span></td>
+                        <td><button class="scet-btn scet-btn-ghost" style="padding: 3px 8px; font-size: 11px;" onclick="openLoginModal()">Assign</button></td>
+                      </tr>
+                      <tr>
+                        <td><strong>Dr. Neha Sharma</strong></td>
+                        <td>Cybersecurity & Crypto</td>
+                        <td>12 / 16 hrs</td>
+                        <td><span class="scet-status-pill scet-pill-balanced">Balanced</span></td>
+                        <td><button class="scet-btn scet-btn-ghost" style="padding: 3px 8px; font-size: 11px;" onclick="openLoginModal()">Details</button></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <!-- Mini Analytics Card -->
+                <div class="scet-dash-analytics-card">
+                  <div>
+                    <div style="font-size: 12px; font-weight: 700; color: var(--color-navy); margin-bottom: 4px;">Department Workload Distribution</div>
+                    <div style="font-size: 11px; color: var(--color-text-secondary);">Teaching hours by specialization area:</div>
+                    
+                    <div class="scet-dash-chart-bars">
+                      <div class="scet-chart-col">
+                        <div class="scet-bar-fill blue" style="height: 85%;"></div>
+                        <span class="scet-chart-label">AI/ML</span>
+                      </div>
+                      <div class="scet-chart-col">
+                        <div class="scet-bar-fill orange" style="height: 65%;"></div>
+                        <span class="scet-chart-label">Net</span>
+                      </div>
+                      <div class="scet-chart-col">
+                        <div class="scet-bar-fill green" style="height: 90%;"></div>
+                        <span class="scet-chart-label">DB</span>
+                      </div>
+                      <div class="scet-chart-col">
+                        <div class="scet-bar-fill blue" style="height: 55%;"></div>
+                        <span class="scet-chart-label">Sys</span>
+                      </div>
+                      <div class="scet-chart-col">
+                        <div class="scet-bar-fill orange" style="height: 75%;"></div>
+                        <span class="scet-chart-label">Algo</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div style="margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--color-border); display: flex; align-items: center; justify-content: space-between; font-size: 11.5px;">
+                    <span style="color: var(--color-text-muted);">NAAC Target: 100% Balanced</span>
+                    <span style="color: var(--color-success); font-weight: 700;">✓ 94.4% Equilibrium</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 7: FEATURES SECTION (Bento Grid) -->
+    <section id="features" class="scet-section scet-section-alt">
+      <div class="scet-container">
+        <div class="scet-section-header">
+          <span class="scet-tag">Platform Capabilities</span>
+          <h2 class="scet-title">Designed to Simplify Academic Operations</h2>
+          <p class="scet-subtitle">
+            Built specifically to handle complex departmental constraints, NAAC workload compliance, and multi-batch laboratory allocations.
+          </p>
+        </div>
+
+        <div class="scet-features-grid">
+          <!-- Feature 1 -->
+          <div class="scet-feature-card highlight">
+            <div>
+              <div class="scet-feature-icon">⚖️</div>
+              <h3 class="scet-feature-title">Intelligent Faculty Load Balancing</h3>
+              <p class="scet-feature-desc">
+                Automatically calculates teaching limits across professors and junior faculty, redistributing lecture duties to prevent academic burnout and ensure equity.
+              </p>
+            </div>
+          </div>
+
+          <!-- Feature 2 -->
+          <div class="scet-feature-card">
+            <div>
+              <div class="scet-feature-icon">🗓️</div>
+              <h3 class="scet-feature-title">Automated Timetable Scheduling</h3>
+              <p class="scet-feature-desc">
+                Generates complete multi-section timetables honoring faculty subject specializations, room capacities, lunch breaks, and institutional working hours.
+              </p>
+            </div>
+          </div>
+
+          <!-- Feature 3 -->
+          <div class="scet-feature-card">
+            <div>
+              <div class="scet-feature-icon">🛡️</div>
+              <h3 class="scet-feature-title">Real-Time Conflict Detection</h3>
+              <p class="scet-feature-desc">
+                Instant collision prevention engine alerts coordinators before any room double-booking or professor overlap occurs across shared lab sessions.
+              </p>
+            </div>
+          </div>
+
+          <!-- Feature 4 -->
+          <div class="scet-feature-card">
+            <div>
+              <div class="scet-feature-icon">🏛️</div>
+              <h3 class="scet-feature-title">Department & Laboratory Allocation</h3>
+              <p class="scet-feature-desc">
+                Manages physical classroom availability in Aryabhata Block and high-performance computing labs in the Turing Center with exact seat constraints.
+              </p>
+            </div>
+          </div>
+
+          <!-- Feature 5 -->
+          <div class="scet-feature-card highlight">
+            <div>
+              <div class="scet-feature-icon">📊</div>
+              <h3 class="scet-feature-title">Faculty Workload Analytics</h3>
+              <p class="scet-feature-desc">
+                Visual distribution charts give HODs immediate visibility into lecture, tutorial, and practical contact hours per semester.
+              </p>
+            </div>
+          </div>
+
+          <!-- Feature 6 -->
+          <div class="scet-feature-card">
+            <div>
+              <div class="scet-feature-icon">📄</div>
+              <h3 class="scet-feature-title">Academic Reports & Exports</h3>
+              <p class="scet-feature-desc">
+                Generates one-click NAAC/NBA compliant workload dossiers and printable PDF timetables ready for administrative circulation.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 8: INTERACTIVE WEEKLY TIMETABLE -->
+    <section id="timetable" class="scet-section">
+      <div class="scet-container">
+        <div class="scet-section-header">
+          <span class="scet-tag">Live Timetable Engine</span>
+          <h2 class="scet-title">A Clearer View of Every Academic Schedule</h2>
+          <p class="scet-subtitle">
+            Filter real-time course timetables by weekday, session type, or faculty assignment.
+          </p>
+        </div>
+
+        <div class="scet-timetable-box">
+          <div class="scet-tt-filter-bar">
+            <!-- Day Filter Pills -->
+            <div class="scet-filter-pills">
+              <span style="font-size: 13px; font-weight: 700; color: var(--color-navy); margin-right: 4px;">Day:</span>
+              <button type="button" class="scet-filter-pill active" data-day-filter="all" onclick="filterTimetableDay('all', this)">All Days</button>
+              <button type="button" class="scet-filter-pill" data-day-filter="mon" onclick="filterTimetableDay('mon', this)">Monday</button>
+              <button type="button" class="scet-filter-pill" data-day-filter="tue" onclick="filterTimetableDay('tue', this)">Tuesday</button>
+              <button type="button" class="scet-filter-pill" data-day-filter="wed" onclick="filterTimetableDay('wed', this)">Wednesday</button>
+              <button type="button" class="scet-filter-pill" data-day-filter="thu" onclick="filterTimetableDay('thu', this)">Thursday</button>
+              <button type="button" class="scet-filter-pill" data-day-filter="fri" onclick="filterTimetableDay('fri', this)">Friday</button>
+              <button type="button" class="scet-filter-pill" data-day-filter="sat" onclick="filterTimetableDay('sat', this)">Saturday</button>
+            </div>
+
+            <!-- Type Filter Pills -->
+            <div class="scet-filter-pills">
+              <span style="font-size: 13px; font-weight: 700; color: var(--color-navy); margin-right: 4px;">Type:</span>
+              <button type="button" class="scet-filter-pill active" data-type-filter="all" onclick="filterTimetableType('all', this)">All Sessions</button>
+              <button type="button" class="scet-filter-pill" data-type-filter="lecture" onclick="filterTimetableType('lecture', this)">Lectures</button>
+              <button type="button" class="scet-filter-pill" data-type-filter="lab" onclick="filterTimetableType('lab', this)">Labs</button>
+              <button type="button" class="scet-filter-pill" data-type-filter="tutorial" onclick="filterTimetableType('tutorial', this)">Tutorials</button>
+            </div>
+
+            <!-- Faculty Filter Pills -->
+            <div class="scet-filter-pills">
+              <span style="font-size: 13px; font-weight: 700; color: var(--color-navy); margin-right: 4px;">Faculty:</span>
+              <button type="button" class="scet-filter-pill active" data-faculty-filter="all" onclick="filterTimetableFaculty('all', this)">All Faculty</button>
+              <button type="button" class="scet-filter-pill" data-faculty-filter="amit" onclick="filterTimetableFaculty('amit', this)">Dr. Amit Verma</button>
+              <button type="button" class="scet-filter-pill" data-faculty-filter="priya" onclick="filterTimetableFaculty('priya', this)">Prof. Priya Patel</button>
+              <button type="button" class="scet-filter-pill" data-faculty-filter="vikram" onclick="filterTimetableFaculty('vikram', this)">Prof. Vikram Singh</button>
+            </div>
+          </div>
+
+          <!-- Dynamic Grid Container -->
+          <div id="scetTimetableGrid" class="scet-tt-grid">
+            <!-- Populated dynamically by static/js/landing.js -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 9: HOW THE PLATFORM WORKS (Visual 3-Step Workflow) -->
+    <section id="workflow" class="scet-section scet-section-alt">
+      <div class="scet-container">
+        <div class="scet-section-header">
+          <span class="scet-tag">Implementation Process</span>
+          <h2 class="scet-title">How The Platform Works</h2>
+          <p class="scet-subtitle">
+            Three streamlined steps to transition your institution from manual spreadsheets to automated academic equilibrium.
+          </p>
+        </div>
+
+        <div class="scet-workflow-steps">
+          <div class="scet-workflow-step">
+            <div class="scet-step-number">STEP 01</div>
+            <h3 class="scet-step-title">Configure Academic Resources</h3>
+            <p class="scet-step-desc">
+              Define departmental faculty limits, subject syllabi, available lecture halls in Aryabhata Block, and specialized laboratory equipment constraints.
+            </p>
+          </div>
+
+          <div class="scet-workflow-step" style="border-top: 4px solid var(--color-orange);">
+            <div class="scet-step-number">STEP 02</div>
+            <h3 class="scet-step-title">Allocate & Balance Workloads</h3>
+            <p class="scet-step-desc">
+              Execute algorithmic distribution logic that matches faculty subject preferences against mandatory weekly credit hours without exceeding 16-hour ceilings.
+            </p>
+          </div>
+
+          <div class="scet-workflow-step">
+            <div class="scet-step-number">STEP 03</div>
+            <h3 class="scet-step-title">Generate Conflict-Aware Timetables</h3>
+            <p class="scet-step-desc">
+              Produce guaranteed collision-free schedules, notify faculty members in real time, and export institutional compliance matrices instantly.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 10: COLLEGE IDENTITY SECTION -->
+    <section id="identity" class="scet-section">
+      <div class="scet-container">
+        <div class="scet-identity-grid">
+          <div>
+            <span class="scet-tag">Institutional Heritage</span>
+            <h2 class="scet-title">Suryodaya College of Engineering & Technology</h2>
+            <p class="scet-subtitle" style="margin-bottom: 24px;">
+              Department of Computer Science & Engineering is committed to academic rigor, state-of-the-art technological pedagogy, and modern educational infrastructure.
+            </p>
+            <p style="font-size: 14.5px; color: var(--color-text-secondary); line-height: 1.65; margin-bottom: 24px;">
+              The Intelligent Faculty Load Balancing Platform serves as the central operational backbone for scheduling hundreds of lectures, high-capacity computing laboratory sessions, and departmental academic reviews each semester.
+            </p>
+            <button type="button" class="scet-btn scet-btn-primary" onclick="openLoginModal()">Access Institutional Portal →</button>
+          </div>
+
+          <div class="scet-identity-card">
+            <h4 style="font-family: var(--font-heading); font-size: 17px; font-weight: 800; color: var(--color-navy); margin-bottom: 8px;">
+              Academic Infrastructure Overview
+            </h4>
+            <p style="font-size: 13px; color: var(--color-text-secondary);">
+              Managed resources under the SCET Load Balancing System:
+            </p>
+
+            <div class="scet-infra-list">
+              <div class="scet-infra-item">
+                <div class="scet-infra-icon">🏛️</div>
+                <div>
+                  <div class="scet-infra-title">Aryabhata Academic Complex</div>
+                  <div class="scet-infra-sub">Equipped with 18 multimedia-enabled lecture halls, tiered amphitheaters, and seminar suites.</div>
+                </div>
+              </div>
+
+              <div class="scet-infra-item">
+                <div class="scet-infra-icon">💻</div>
+                <div>
+                  <div class="scet-infra-title">Turing Advanced Computing Center</div>
+                  <div class="scet-infra-sub">6 specialized laboratory bays dedicated to AI, Data Engineering, Networks, and Operating Systems.</div>
+                </div>
+              </div>
+
+              <div class="scet-infra-item">
+                <div class="scet-infra-icon">🎓</div>
+                <div>
+                  <div class="scet-infra-title">Deanery & Department Coordination Office</div>
+                  <div class="scet-infra-sub">Central administration hub for HOD review, curriculum tracking, and faculty mentorship.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 11: DEDICATED LOGIN GATEWAY MODAL (Preserves all authentication IDs) -->
+    <div id="scetLoginModal" class="scet-login-modal-overlay">
+      <div class="scet-login-box">
+        <button type="button" class="scet-modal-close" onclick="closeLoginModal()" aria-label="Close login dialog">✕</button>
+
+        <div class="scet-login-header">
+          <div class="scet-login-crest">🎓</div>
+          <h3 class="scet-login-title">SCET Academic Portal Gateway</h3>
+          <p class="scet-login-desc">Enter institutional credentials to access your faculty dashboard.</p>
+        </div>
+
+        <!-- 1-Click Demo Accounts Pills (Filled dynamically by App.renderDemoAccountPills) -->
+        <div style="margin-bottom: 14px;">
+          <label class="scet-label" style="font-size: 11.5px; color: var(--color-text-muted);">⚡ 1-Click Demo Access:</label>
+          <div id="demoPillsContainer" class="scet-demo-pills demo-pills-list">
+            <button type="button" class="scet-demo-btn demo-pill-btn" onclick="App.fillDemoLogin('hod_cs', 'admin123')">HOD (hod_cs)</button>
+            <button type="button" class="scet-demo-btn demo-pill-btn" onclick="App.fillDemoLogin('prof_amit', 'faculty123')">Faculty Overloaded (prof_amit)</button>
+            <button type="button" class="scet-demo-btn demo-pill-btn" onclick="App.fillDemoLogin('prof_vikram', 'faculty123')">Faculty Available (prof_vikram)</button>
           </div>
         </div>
 
-        <!-- Hero Right: Glassmorphic Portal Login Card -->
-        <div class="lp-hero-portal-wrap">
-          <div id="portalLoginCard" class="lp-portal-card">
-            <div class="lp-card-header">
-              <div class="lp-card-crest">🎓</div>
-              <div class="lp-card-title-wrap">
-                <h3 class="lp-card-title">Institutional Portal Gateway</h3>
-                <p class="lp-card-sub">Role-Based Access for HOD & Engineering Faculty</p>
-              </div>
+        <!-- Authenticated Login Form -->
+        <form id="loginForm" onsubmit="App.handleLoginForm(event)">
+          <div class="scet-form-group">
+            <label class="scet-label" for="loginUsername">Institutional ID / Username</label>
+            <div class="scet-input-container">
+              <span class="scet-input-icon">👤</span>
+              <input type="text" id="loginUsername" class="scet-input" placeholder="e.g. hod_cs or prof_amit" required autocomplete="username">
             </div>
+          </div>
 
-            <!-- Quick Demo Account Switcher -->
-            <div class="demo-pills-box" style="margin-bottom: 16px;">
-              <div class="demo-pills-title">⚡ 1-Click Demo Accounts</div>
-              <div id="demoPillsContainer" class="demo-pills-list">
-                <!-- Populated by JavaScript -->
-              </div>
-            </div>
-
-            <div id="loginErrorBox" class="conflict-banner conflict-danger" style="display: none; margin-bottom: 16px;"></div>
-
-            <form id="loginForm" onsubmit="App.handleLoginForm(event)">
-              <div class="form-group" style="margin-bottom: 14px;">
-                <label class="form-label" for="loginUsername" style="color: #cbd5e1; font-size: 13px; font-weight: 600;">Username / Faculty ID</label>
-                <div class="lp-input-wrap">
-                  <span class="lp-input-icon">👤</span>
-                  <input type="text" id="loginUsername" class="form-control lp-input" placeholder="e.g. hod_cs or prof_amit" required autofocus>
-                </div>
-              </div>
-
-              <div class="form-group" style="margin-bottom: 14px;">
-                <label class="form-label" for="loginPassword" style="color: #cbd5e1; font-size: 13px; font-weight: 600;">Password</label>
-                <div class="lp-input-wrap">
-                  <span class="lp-input-icon">🔒</span>
-                  <input type="password" id="loginPassword" class="form-control lp-input" placeholder="••••••••" required>
-                </div>
-              </div>
-
-              <button type="submit" id="loginSubmitBtn" class="lp-btn lp-btn-block lp-btn-primary lp-btn-submit">
-                Sign In to Portal →
+          <div class="scet-form-group">
+            <label class="scet-label" for="loginPassword">Portal Password</label>
+            <div class="scet-input-container">
+              <span class="scet-input-icon">🔒</span>
+              <input type="password" id="loginPassword" class="scet-input" placeholder="••••••••" required autocomplete="current-password">
+              <button type="button" class="scet-toggle-pw" onclick="togglePasswordVisibility()" aria-label="Toggle password view">
+                <span id="scetPwToggleIcon">👁️</span>
               </button>
-            </form>
-
-            <div class="lp-card-footer">
-              <span>🔐 Role-based access control with secure encryption and automated reminder dispatch.</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Interactive Live Load Balancer Simulator Section -->
-    <section id="lp-balancer" class="lp-section lp-section-alt">
-      <div class="lp-container">
-        <div class="lp-section-header">
-          <span class="lp-section-tag">Interactive Preview</span>
-          <h2 class="lp-section-title">Live Workload Balancing Engine</h2>
-          <p class="lp-section-desc">Experience how our algorithmic scheduler prevents faculty overload and dynamically redistributes college duties to available professors.</p>
-        </div>
-
-        <div class="lp-sim-box">
-          <div class="lp-sim-grid">
-            <!-- Faculty 1: High Load -->
-            <div id="simCard1" class="lp-sim-card">
-              <div class="lp-sim-prof">
-                <div>
-                  <div class="lp-sim-name">Dr. Amit Verma</div>
-                  <div class="lp-sim-role">Associate Professor • CS</div>
-                </div>
-                <span id="simBadge1" class="lp-sim-badge high">Overloaded (18h)</span>
-              </div>
-              <div class="lp-sim-progress-wrap">
-                <div class="lp-sim-progress-info">
-                  <span>Weekly Lectures & Duties</span>
-                  <span id="simVal1" style="font-weight: 700; color: #f87171;">18 / 16 hrs (112%)</span>
-                </div>
-                <div class="lp-sim-bar">
-                  <div id="simBar1" class="lp-sim-bar-fill" style="width: 100%; background: #ef4444;"></div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Faculty 2: Balanced -->
-            <div id="simCard2" class="lp-sim-card">
-              <div class="lp-sim-prof">
-                <div>
-                  <div class="lp-sim-name">Prof. Priya Patel</div>
-                  <div class="lp-sim-role">Assistant Professor • CS</div>
-                </div>
-                <span id="simBadge2" class="lp-sim-badge balanced">Balanced (14h)</span>
-              </div>
-              <div class="lp-sim-progress-wrap">
-                <div class="lp-sim-progress-info">
-                  <span>Weekly Lectures & Duties</span>
-                  <span id="simVal2" style="font-weight: 700; color: #60a5fa;">14 / 16 hrs (88%)</span>
-                </div>
-                <div class="lp-sim-bar">
-                  <div id="simBar2" class="lp-sim-bar-fill" style="width: 88%; background: #3b82f6;"></div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Faculty 3: Available -->
-            <div id="simCard3" class="lp-sim-card active">
-              <div class="lp-sim-prof">
-                <div>
-                  <div class="lp-sim-name">Prof. Vikram Singh</div>
-                  <div class="lp-sim-role">Lecturer • CS</div>
-                </div>
-                <span id="simBadge3" class="lp-sim-badge available">Available (8h)</span>
-              </div>
-              <div class="lp-sim-progress-wrap">
-                <div class="lp-sim-progress-info">
-                  <span>Weekly Lectures & Duties</span>
-                  <span id="simVal3" style="font-weight: 700; color: #34d399;">8 / 16 hrs (50%)</span>
-                </div>
-                <div class="lp-sim-bar">
-                  <div id="simBar3" class="lp-sim-bar-fill" style="width: 50%; background: #10b981;"></div>
-                </div>
-              </div>
             </div>
           </div>
 
-          <!-- Simulator Interactive Action Controls -->
-          <div class="lp-sim-actions">
-            <button type="button" class="lp-btn lp-btn-outline" onclick="window.simulateDutyAssignment()">
-              <span>➕ Simulate New 3hr Exam Duty</span>
-            </button>
-            <button type="button" class="lp-btn lp-btn-primary" onclick="window.simulateAutoRebalance()">
-              <span>⚖️ Run AI Load Rebalancer</span>
-            </button>
-            <button type="button" class="lp-btn lp-btn-ghost" onclick="window.resetSimulator()">
-              <span>🔄 Reset Demo</span>
-            </button>
-          </div>
-          <div id="simStatusMsg" style="text-align: center; margin-top: 14px; font-size: 13px; color: #38bdf8; font-weight: 500;">
-            Status: System balanced. Prof. Vikram Singh is currently recommended for extra duties.
-          </div>
+          <!-- Error Alert Box -->
+          <div id="loginErrorBox" style="display: none; padding: 10px 14px; background: #FEE2E2; border: 1px solid #FCA5A5; color: #B91C1C; border-radius: 6px; font-size: 12.5px; margin-bottom: 16px;"></div>
+
+          <button type="submit" id="loginSubmitBtn" class="scet-btn scet-btn-primary" style="width: 100%; padding: 11px; font-size: 14.5px;">
+            Sign In to Academic Portal →
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- SESSION DETAILS MODAL -->
+    <div id="scetSlotModal" class="scet-login-modal-overlay">
+      <div class="scet-login-box" style="max-width: 520px;">
+        <button type="button" class="scet-modal-close" onclick="closeSlotModal()" aria-label="Close session dialog">✕</button>
+        <div id="scetSlotModalBody">
+          <!-- Populated dynamically by landing.js -->
         </div>
       </div>
-    </section>
+    </div>
 
-    <!-- Bento Grid Platform Features -->
-    <section id="lp-features" class="lp-section">
-      <div class="lp-container">
-        <div class="lp-section-header">
-          <span class="lp-section-tag">Architecture & Capabilities</span>
-          <h2 class="lp-section-title">Built for Engineering Excellence</h2>
-          <p class="lp-section-desc">Six enterprise-grade pillars ensuring zero scheduling conflict and effortless academic administration.</p>
-        </div>
-
-        <div class="lp-bento-grid">
-          <div class="lp-bento-card">
-            <div class="lp-bento-icon">🛡️</div>
-            <h3 class="lp-bento-title">Real-Time Conflict Prevention</h3>
-            <p class="lp-bento-desc">Millisecond validation prevents classroom double-booking and teacher time collisions before assignment commit.</p>
+    <!-- SECTION 13: PREMIUM DEEP NAVY FOOTER -->
+    <footer class="scet-footer">
+      <div class="scet-container">
+        <div class="scet-footer-grid">
+          <div class="scet-footer-brand">
+            <h4>Suryodaya College of Engineering & Technology</h4>
+            <p>
+              Intelligent Faculty Load Balancing & Academic Management System. Ensuring equitable workload allocation, collision-free scheduling, and institutional excellence.
+            </p>
           </div>
 
-          <div class="lp-bento-card">
-            <div class="lp-bento-icon">⚖️</div>
-            <h3 class="lp-bento-title">Dynamic Workload Balancing</h3>
-            <p class="lp-bento-desc">Tracks lecture hours, practical lab sessions, and college duties against departmental thresholds automatically.</p>
+          <div class="scet-footer-col">
+            <h5>Navigation</h5>
+            <ul class="scet-footer-links">
+              <li><a href="#hero" class="scet-footer-link">Home</a></li>
+              <li><a href="#platform" class="scet-footer-link">Platform Overview</a></li>
+              <li><a href="#simulator" class="scet-footer-link">Workload Simulator</a></li>
+              <li><a href="#timetable" class="scet-footer-link">Weekly Timetable</a></li>
+            </ul>
           </div>
 
-          <div class="lp-bento-card">
-            <div class="lp-bento-icon">📅</div>
-            <h3 class="lp-bento-title">Visual Weekly Timetables</h3>
-            <p class="lp-bento-desc">Interactive weekly timetable grid color-coded by class, subject, and classroom hall with live filtering.</p>
+          <div class="scet-footer-col">
+            <h5>Campus Resources</h5>
+            <ul class="scet-footer-links">
+              <li><a href="#identity" class="scet-footer-link">Aryabhata Academic Complex</a></li>
+              <li><a href="#identity" class="scet-footer-link">Turing Computing Labs</a></li>
+              <li><a href="#workflow" class="scet-footer-link">Academic Workflow</a></li>
+              <li><a href="#features" class="scet-footer-link">NAAC Workload Statements</a></li>
+            </ul>
           </div>
 
-          <div class="lp-bento-card">
-            <div class="lp-bento-icon">📑</div>
-            <h3 class="lp-bento-title">Official Accreditation Exports</h3>
-            <p class="lp-bento-desc">1-Click generation of high-resolution institutional PDF & Excel workload statements compliant with NAAC and NBA audits.</p>
-          </div>
-
-          <div class="lp-bento-card">
-            <div class="lp-bento-icon">🔔</div>
-            <h3 class="lp-bento-title">Automated Duty Reminders</h3>
-            <p class="lp-bento-desc">Scheduled cron dispatch for upcoming lectures, substitute slots, and exam duties delivered via in-app alerts.</p>
-          </div>
-
-          <div class="lp-bento-card">
-            <div class="lp-bento-icon">🔐</div>
-            <h3 class="lp-bento-title">Role-Based Security</h3>
-            <p class="lp-bento-desc">Custom administrative workspaces for HODs with full assignment authority, and personal portals for faculty members.</p>
+          <div class="scet-footer-col">
+            <h5>Portal Access</h5>
+            <ul class="scet-footer-links">
+              <li><a href="javascript:void(0)" onclick="openLoginModal()" class="scet-footer-link">HOD Sign In</a></li>
+              <li><a href="javascript:void(0)" onclick="openLoginModal()" class="scet-footer-link">Faculty Member Portal</a></li>
+              <li><a href="javascript:void(0)" onclick="App.fillDemoLogin('hod_cs', 'admin123')" class="scet-footer-link">Launch 1-Click Demo</a></li>
+            </ul>
           </div>
         </div>
-      </div>
-    </section>
 
-    <!-- Engineering Academic Blocks Section -->
-    <section id="lp-departments" class="lp-section lp-section-alt">
-      <div class="lp-container">
-        <div class="lp-section-header">
-          <span class="lp-section-tag">Campus Infrastructure</span>
-          <h2 class="lp-section-title">Departmental Academic Coverage</h2>
-          <p class="lp-section-desc">Coordinating teaching capacity across lecture halls, specialized laboratories, and seminar blocks.</p>
+        <div class="scet-footer-bottom">
+          <div>© 2026 Suryodaya College of Engineering & Technology. All rights reserved.</div>
+          <div style="color: #94A3B8;">Department of Computer Science & Engineering • Academic Management Portal</div>
         </div>
-
-        <div class="lp-bento-grid">
-          <div class="lp-bento-card" style="border-left: 4px solid #38bdf8;">
-            <h3 class="lp-bento-title">Computer Science & Engineering</h3>
-            <p class="lp-bento-desc">Aryabhata Academic Block • LH-301, LH-302, Computing Center Labs 1 & 2 • 6 Faculty Members</p>
-          </div>
-          <div class="lp-bento-card" style="border-left: 4px solid #a855f7;">
-            <h3 class="lp-bento-title">Artificial Intelligence & Data Science</h3>
-            <p class="lp-bento-desc">Computing Center Lab 3 • AI Research Lab • Seminar Hall A • Machine Learning Curriculum</p>
-          </div>
-          <div class="lp-bento-card" style="border-left: 4px solid #10b981;">
-            <h3 class="lp-bento-title">Central Examination & Quality Cell</h3>
-            <p class="lp-bento-desc">Mid-Term Invigilation • Flying Squad Allocation • NAAC Criterion 2 Course File Auditing</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Institutional Footer -->
-    <footer class="lp-footer">
-      <div class="lp-footer-content">
-        <div class="lp-footer-title">🎓 Suryodaya College Of Engineering and Technology</div>
-        <div class="lp-footer-sub">Faculty Load Management System • Department of Computer Science & Engineering • Academic Year 2026-2027</div>
       </div>
     </footer>
+
   </div>
 
-  <!-- Client-side Interactive Load Balancer Simulator Script -->
-  <script>
-    window.simulateDutyAssignment = function() {
-      const msg = document.getElementById('simStatusMsg');
-      const b3 = document.getElementById('simBar3');
-      const val3 = document.getElementById('simVal3');
-      const badge3 = document.getElementById('simBadge3');
-      if (b3 && val3 && badge3 && msg) {
-        b3.style.width = '69%';
-        b3.style.background = '#3b82f6';
-        val3.textContent = '11 / 16 hrs (69%)';
-        val3.style.color = '#60a5fa';
-        badge3.className = 'lp-sim-badge balanced';
-        badge3.textContent = 'Assigned Duty (11h)';
-        msg.textContent = '⚡ Intelligent Action: 3hr Exam Duty successfully assigned to Prof. Vikram Singh (Zero Conflict detected).';
-        msg.style.color = '#34d399';
-      }
-    };
-
-    window.simulateAutoRebalance = function() {
-      const msg = document.getElementById('simStatusMsg');
-      const b1 = document.getElementById('simBar1');
-      const val1 = document.getElementById('simVal1');
-      const badge1 = document.getElementById('simBadge1');
-      const b3 = document.getElementById('simBar3');
-      const val3 = document.getElementById('simVal3');
-      const badge3 = document.getElementById('simBadge3');
-
-      if (b1 && val1 && badge1 && b3 && val3 && badge3 && msg) {
-        b1.style.width = '94%';
-        b1.style.background = '#3b82f6';
-        val1.textContent = '15 / 16 hrs (94%)';
-        val1.style.color = '#60a5fa';
-        badge1.className = 'lp-sim-badge balanced';
-        badge1.textContent = 'Balanced (15h)';
-
-        b3.style.width = '69%';
-        b3.style.background = '#3b82f6';
-        val3.textContent = '11 / 16 hrs (69%)';
-        val3.style.color = '#60a5fa';
-        badge3.className = 'lp-sim-badge balanced';
-        badge3.textContent = 'Balanced (11h)';
-
-        msg.textContent = '✨ Rebalance Complete: 3hr remedial lecture transferred from Dr. Amit Verma to Prof. Vikram Singh. All faculty now balanced!';
-        msg.style.color = '#a78bfa';
-      }
-    };
-
-    window.resetSimulator = function() {
-      const msg = document.getElementById('simStatusMsg');
-      const b1 = document.getElementById('simBar1');
-      const val1 = document.getElementById('simVal1');
-      const badge1 = document.getElementById('simBadge1');
-      const b3 = document.getElementById('simBar3');
-      const val3 = document.getElementById('simVal3');
-      const badge3 = document.getElementById('simBadge3');
-
-      if (b1 && val1 && badge1 && b3 && val3 && badge3 && msg) {
-        b1.style.width = '100%';
-        b1.style.background = '#ef4444';
-        val1.textContent = '18 / 16 hrs (112%)';
-        val1.style.color = '#f87171';
-        badge1.className = 'lp-sim-badge high';
-        badge1.textContent = 'Overloaded (18h)';
-
-        b3.style.width = '50%';
-        b3.style.background = '#10b981';
-        val3.textContent = '8 / 16 hrs (50%)';
-        val3.style.color = '#34d399';
-        badge3.className = 'lp-sim-badge available';
-        badge3.textContent = 'Available (8h)';
-
-        msg.textContent = 'Status: Simulator reset to default departmental state.';
-        msg.style.color = '#38bdf8';
-      }
-    };
-  </script>
-
-  <!-- ====================================================================
+<!-- ====================================================================
        2. AUTHENTICATED APP SHELL
        ==================================================================== -->
   <div id="appShell" class="app-container" style="display: none;">
@@ -458,14 +833,6 @@
             <span class="icon">📅</span>
             <span>My Timetable</span>
           </a>
-          <a class="nav-item" data-view="view-notifications">
-            <span class="icon">🔔</span>
-            <span>Notifications</span>
-          </a>
-          <a class="nav-item" data-view="view-profile">
-            <span class="icon">⚙️</span>
-            <span>Reminders & Profile</span>
-          </a>
         </div>
 
         <div class="nav-section-label">General</div>
@@ -474,8 +841,8 @@
           <span>Notifications</span>
         </a>
         <a class="nav-item" data-view="view-profile">
-          <span class="icon">👤</span>
-          <span>My Profile</span>
+          <span class="icon">⚙️</span>
+          <span>Reminders & Profile</span>
         </a>
       </nav>
 
@@ -691,8 +1058,8 @@
              ================================================================== -->
         <section id="view-faculty-dashboard" class="view-section">
           <div class="card" style="background: linear-gradient(135deg, #1e3a8a, #172554); color: white; padding: 26px;">
-            <h2 style="font-size: 22px; font-weight: 800;">Welcome to Your Faculty Portal</h2>
-            <p style="color: #cbd5e1; font-size: 13.5px; margin-top: 4px;">
+            <h2 id="facWelcomeTitle" style="font-size: 22px; font-weight: 800;">Welcome to Your Faculty Portal</h2>
+            <p id="facWelcomeSub" style="color: #cbd5e1; font-size: 13.5px; margin-top: 4px;">
               View your personalized weekly teaching timetable, assigned examination/college duties, and real-time reminders.
             </p>
           </div>
@@ -1382,6 +1749,7 @@
   <script src="/static/js/assignments.js"></script>
   <script src="/static/js/notifications.js"></script>
   <script src="/static/js/faculty.js"></script>
+  <script src="/static/js/landing.js"></script>
   <script src="/static/js/app.js"></script>
 </body>
 </html>

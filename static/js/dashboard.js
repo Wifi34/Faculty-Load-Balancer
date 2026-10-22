@@ -331,42 +331,72 @@ const Dashboard = {
     try {
       const data = await API.getFacultyById(user.faculty_id);
       const metrics = data.metrics;
+      const fac = data.faculty;
 
-      document.getElementById('facMyTotalLoad').textContent = `${metrics.total_load_hours} hrs`;
-      document.getElementById('facMyLectureCount').textContent = metrics.weekly_lectures;
-      document.getElementById('facMyDutyCount').textContent = metrics.assigned_duties;
-      document.getElementById('facMyAvailableSlots').textContent = `${metrics.available_slots} slots`;
+      // Personalize welcome card
+      const welcomeTitle = document.getElementById('facWelcomeTitle');
+      if (welcomeTitle && fac) {
+        welcomeTitle.textContent = `Welcome, ${fac.name}`;
+      }
+      const welcomeSub = document.getElementById('facWelcomeSub');
+      if (welcomeSub && fac) {
+        welcomeSub.textContent = `${fac.designation} • ${fac.department} (${fac.faculty_code})`;
+      }
+
+      const totalLoadEl = document.getElementById('facMyTotalLoad');
+      if (totalLoadEl) totalLoadEl.textContent = `${metrics.total_load_hours} hrs`;
+
+      const lectCountEl = document.getElementById('facMyLectureCount');
+      if (lectCountEl) lectCountEl.textContent = metrics.weekly_lectures;
+
+      const dutyCountEl = document.getElementById('facMyDutyCount');
+      if (dutyCountEl) dutyCountEl.textContent = metrics.assigned_duties;
+
+      const availSlotsEl = document.getElementById('facMyAvailableSlots');
+      if (availSlotsEl) availSlotsEl.textContent = `${metrics.available_slots} slots`;
 
       // Progress bar
       const pct = Math.min(100, Math.round((metrics.total_load_hours / metrics.weekly_lecture_limit) * 100));
       const pBar = document.getElementById('facLoadProgressBar');
       if (pBar) {
         pBar.style.width = `${pct}%`;
-        pBar.className = pct >= 100 ? 'bg-danger' : (pct >= 60 ? 'bg-success' : 'bg-primary');
+        pBar.style.backgroundColor = pct >= 100 ? '#ef4444' : (pct >= 60 ? '#22c55e' : '#2563eb');
       }
-      document.getElementById('facLoadPctLabel').textContent = `${pct}% of weekly limit (${metrics.total_load_hours}/${metrics.weekly_lecture_limit} hrs)`;
+      const pLabel = document.getElementById('facLoadPctLabel');
+      if (pLabel) {
+        pLabel.textContent = `${pct}% of weekly limit (${metrics.total_load_hours}/${metrics.weekly_lecture_limit} hrs)`;
+        pLabel.className = `badge ${pct >= 100 ? 'badge-high' : (pct >= 60 ? 'badge-balanced' : 'badge-low')}`;
+      }
 
       // Load my upcoming duties
       const mySchedules = await API.getSchedules();
       const listContainer = document.getElementById('facUpcomingDutiesList');
       if (listContainer) {
-        if (!mySchedules.length) {
+        if (!mySchedules || !mySchedules.length) {
           listContainer.innerHTML = '<div style="color: #64748b; padding: 20px; text-align: center;">No scheduled lectures or duties assigned yet.</div>';
           return;
         }
 
-        listContainer.innerHTML = mySchedules.slice(0, 6).map(s => `
-          <div style="padding: 12px; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center;">
-            <div>
-              <div style="font-weight: 700; font-size: 13.5px; color: #1e3a8a;">${s.duty_title}</div>
-              <div style="font-size: 12px; color: #64748b; margin-top: 3px;">
-                📅 <strong>${s.day_of_week}, ${s.date}</strong> • ⏰ ${s.start_time} - ${s.end_time} • 📍 ${s.classroom_name || 'Designated Room'}
+        listContainer.innerHTML = mySchedules.slice(0, 6).map(s => {
+          let typeBadge = 'badge-regular';
+          if (s.schedule_type === 'exam_duty') typeBadge = 'badge-exam';
+          else if (s.schedule_type === 'substitute_lecture') typeBadge = 'badge-substitute';
+          else if (s.schedule_type === 'lab_duty') typeBadge = 'badge-lab';
+          else if (s.schedule_type === 'college_duty') typeBadge = 'badge-college';
+
+          return `
+            <div style="padding: 12px; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <div style="font-weight: 700; font-size: 13.5px; color: #1e3a8a;">${s.duty_title}</div>
+                <div style="font-size: 12px; color: #64748b; margin-top: 3px;">
+                  📅 <strong>${s.day_of_week}, ${s.date}</strong> • ⏰ ${s.start_time} - ${s.end_time} • 📍 ${s.classroom_name || 'Designated Room'}
+                </div>
+                ${s.instructions ? `<div style="font-size: 11px; color: #b45309; margin-top: 2px;">⚠️ Note: ${s.instructions}</div>` : ''}
               </div>
-              ${s.instructions ? `<div style="font-size: 11px; color: #b45309; margin-top: 2px;">⚠️ Note: ${s.instructions}</div>` : ''}
+              <span class="badge ${typeBadge}">${s.schedule_type.replace('_', ' ').toUpperCase()}</span>
             </div>
-            <span class="badge badge-regular">${s.schedule_type.replace('_', ' ').toUpperCase()}</span>
-          </div>
-        `).join('');
+          `;
+        }).join('');
       }
 
     } catch (err) {
