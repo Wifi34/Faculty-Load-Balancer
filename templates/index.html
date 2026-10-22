@@ -19,47 +19,384 @@
 <body>
 
   <!-- ====================================================================
-       1. LOGIN VIEW (Role-Based: HOD or Faculty)
+       1. GRAND INSTITUTIONAL LANDING PAGE & PORTAL GATEWAY
        ==================================================================== -->
-  <div id="loginSection" class="login-page-wrap">
-    <div class="login-card">
-      <div class="login-brand">
-        <div class="login-logo">🎓</div>
-        <h2 class="login-title">Suryodaya College Of Engineering and Technology</h2>
-        <p class="login-subtitle">Faculty Load Management System</p>
-      </div>
-
-      <!-- Quick Demo Account Switcher -->
-      <div class="demo-pills-box">
-        <div class="demo-pills-title">⚡ 1-Click Demo Accounts</div>
-        <div id="demoPillsContainer" class="demo-pills-list">
-          <!-- Populated by JavaScript -->
+  <div id="loginSection" class="lp-wrapper">
+    <!-- Modern Sticky Navigation Bar -->
+    <header class="lp-navbar">
+      <div class="lp-nav-container">
+        <a href="#" class="lp-brand">
+          <div class="lp-brand-logo">🎓</div>
+          <div class="lp-brand-text">
+            <span class="lp-brand-title">Suryodaya College</span>
+            <span class="lp-brand-sub">Of Engineering & Technology</span>
+          </div>
+        </a>
+        <nav class="lp-nav-links">
+          <a href="#lp-features" class="lp-nav-link">Platform Features</a>
+          <a href="#lp-balancer" class="lp-nav-link">AI Balancer</a>
+          <a href="#lp-conflict" class="lp-nav-link">Conflict Engine</a>
+          <a href="#lp-departments" class="lp-nav-link">Academic Blocks</a>
+        </nav>
+        <div class="lp-nav-actions">
+          <a href="#portalLoginCard" class="lp-btn lp-btn-outline" style="padding: 8px 16px; font-size: 13px;">⚡ 1-Click Demo</a>
+          <a href="#portalLoginCard" class="lp-btn lp-btn-primary" style="padding: 8px 18px; font-size: 13px;">Portal Sign In →</a>
         </div>
       </div>
+    </header>
 
-      <div id="loginErrorBox" class="conflict-banner conflict-danger" style="display: none; margin-bottom: 16px;"></div>
+    <!-- Hero Section -->
+    <section class="lp-hero">
+      <div class="lp-hero-container">
+        <!-- Hero Left: Value Proposition -->
+        <div class="lp-hero-content">
+          <div class="lp-badge">
+            <span class="lp-badge-dot"></span>
+            <span>Next-Gen Academic Load Balancer & Timetable System</span>
+          </div>
+          <h1 class="lp-hero-title">
+            Intelligent Faculty <br>
+            <span class="lp-gradient-text">Load Balancing</span> & <br>
+            Academic Portal
+          </h1>
+          <p class="lp-hero-desc">
+            Automated conflict-free lecture scheduling, real-time lab allocation, equitable faculty teaching hour distribution, and instant NAAC-compliant reporting for Suryodaya College of Engineering & Technology.
+          </p>
 
-      <form id="loginForm" onsubmit="App.handleLoginForm(event)">
-        <div class="form-group">
-          <label class="form-label" for="loginUsername">Username / Faculty ID</label>
-          <input type="text" id="loginUsername" class="form-control" placeholder="e.g. hod_cs or prof_amit" required autofocus>
+          <!-- Real-Time Metrics Chips -->
+          <div class="lp-hero-stats">
+            <div class="lp-stat-chip">
+              <div class="lp-stat-num">100%</div>
+              <div class="lp-stat-label">Conflict-Free Slots</div>
+            </div>
+            <div class="lp-stat-chip">
+              <div class="lp-stat-num">16 hrs</div>
+              <div class="lp-stat-label">Standard Workload Limit</div>
+            </div>
+            <div class="lp-stat-chip">
+              <div class="lp-stat-num">&lt;50ms</div>
+              <div class="lp-stat-label">Collision Detection</div>
+            </div>
+          </div>
+
+          <!-- Hero Action CTAs -->
+          <div class="lp-hero-cta-group">
+            <a href="#portalLoginCard" class="lp-btn lp-btn-gradient">
+              <span>🚀 Access Portal Gateway</span>
+            </a>
+            <button type="button" class="lp-btn lp-btn-outline" onclick="App.fillDemoLogin('hod_cs', 'admin123')">
+              <span>⚡ Launch HOD Demo</span>
+            </button>
+          </div>
+
+          <div class="lp-accreditation-pill">
+            <span>🏛️ Approved by AICTE • Affiliated to University • Accredited by NAAC • ISO 9001:2015</span>
+          </div>
         </div>
 
-        <div class="form-group">
-          <label class="form-label" for="loginPassword">Password</label>
-          <input type="password" id="loginPassword" class="form-control" placeholder="••••••••" required>
+        <!-- Hero Right: Glassmorphic Portal Login Card -->
+        <div class="lp-hero-portal-wrap">
+          <div id="portalLoginCard" class="lp-portal-card">
+            <div class="lp-card-header">
+              <div class="lp-card-crest">🎓</div>
+              <div class="lp-card-title-wrap">
+                <h3 class="lp-card-title">Institutional Portal Gateway</h3>
+                <p class="lp-card-sub">Role-Based Access for HOD & Engineering Faculty</p>
+              </div>
+            </div>
+
+            <!-- Quick Demo Account Switcher -->
+            <div class="demo-pills-box" style="margin-bottom: 16px;">
+              <div class="demo-pills-title">⚡ 1-Click Demo Accounts</div>
+              <div id="demoPillsContainer" class="demo-pills-list">
+                <!-- Populated by JavaScript -->
+              </div>
+            </div>
+
+            <div id="loginErrorBox" class="conflict-banner conflict-danger" style="display: none; margin-bottom: 16px;"></div>
+
+            <form id="loginForm" onsubmit="App.handleLoginForm(event)">
+              <div class="form-group" style="margin-bottom: 14px;">
+                <label class="form-label" for="loginUsername" style="color: #cbd5e1; font-size: 13px; font-weight: 600;">Username / Faculty ID</label>
+                <div class="lp-input-wrap">
+                  <span class="lp-input-icon">👤</span>
+                  <input type="text" id="loginUsername" class="form-control lp-input" placeholder="e.g. hod_cs or prof_amit" required autofocus>
+                </div>
+              </div>
+
+              <div class="form-group" style="margin-bottom: 14px;">
+                <label class="form-label" for="loginPassword" style="color: #cbd5e1; font-size: 13px; font-weight: 600;">Password</label>
+                <div class="lp-input-wrap">
+                  <span class="lp-input-icon">🔒</span>
+                  <input type="password" id="loginPassword" class="form-control lp-input" placeholder="••••••••" required>
+                </div>
+              </div>
+
+              <button type="submit" id="loginSubmitBtn" class="lp-btn lp-btn-block lp-btn-primary lp-btn-submit">
+                Sign In to Portal →
+              </button>
+            </form>
+
+            <div class="lp-card-footer">
+              <span>🔐 Role-based access control with secure encryption and automated reminder dispatch.</span>
+            </div>
+          </div>
         </div>
-
-        <button type="submit" id="loginSubmitBtn" class="btn btn-primary" style="width: 100%; padding: 11px; margin-top: 8px;">
-          Sign In to Portal
-        </button>
-      </form>
-
-      <div style="margin-top: 20px; font-size: 11.5px; color: #64748b; text-align: center; border-top: 1px solid #f1f5f9; padding-top: 14px;">
-        Role-based access control with secure encryption and automated reminder dispatch.
       </div>
-    </div>
+    </section>
+
+    <!-- Interactive Live Load Balancer Simulator Section -->
+    <section id="lp-balancer" class="lp-section lp-section-alt">
+      <div class="lp-container">
+        <div class="lp-section-header">
+          <span class="lp-section-tag">Interactive Preview</span>
+          <h2 class="lp-section-title">Live Workload Balancing Engine</h2>
+          <p class="lp-section-desc">Experience how our algorithmic scheduler prevents faculty overload and dynamically redistributes college duties to available professors.</p>
+        </div>
+
+        <div class="lp-sim-box">
+          <div class="lp-sim-grid">
+            <!-- Faculty 1: High Load -->
+            <div id="simCard1" class="lp-sim-card">
+              <div class="lp-sim-prof">
+                <div>
+                  <div class="lp-sim-name">Dr. Amit Verma</div>
+                  <div class="lp-sim-role">Associate Professor • CS</div>
+                </div>
+                <span id="simBadge1" class="lp-sim-badge high">Overloaded (18h)</span>
+              </div>
+              <div class="lp-sim-progress-wrap">
+                <div class="lp-sim-progress-info">
+                  <span>Weekly Lectures & Duties</span>
+                  <span id="simVal1" style="font-weight: 700; color: #f87171;">18 / 16 hrs (112%)</span>
+                </div>
+                <div class="lp-sim-bar">
+                  <div id="simBar1" class="lp-sim-bar-fill" style="width: 100%; background: #ef4444;"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Faculty 2: Balanced -->
+            <div id="simCard2" class="lp-sim-card">
+              <div class="lp-sim-prof">
+                <div>
+                  <div class="lp-sim-name">Prof. Priya Patel</div>
+                  <div class="lp-sim-role">Assistant Professor • CS</div>
+                </div>
+                <span id="simBadge2" class="lp-sim-badge balanced">Balanced (14h)</span>
+              </div>
+              <div class="lp-sim-progress-wrap">
+                <div class="lp-sim-progress-info">
+                  <span>Weekly Lectures & Duties</span>
+                  <span id="simVal2" style="font-weight: 700; color: #60a5fa;">14 / 16 hrs (88%)</span>
+                </div>
+                <div class="lp-sim-bar">
+                  <div id="simBar2" class="lp-sim-bar-fill" style="width: 88%; background: #3b82f6;"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Faculty 3: Available -->
+            <div id="simCard3" class="lp-sim-card active">
+              <div class="lp-sim-prof">
+                <div>
+                  <div class="lp-sim-name">Prof. Vikram Singh</div>
+                  <div class="lp-sim-role">Lecturer • CS</div>
+                </div>
+                <span id="simBadge3" class="lp-sim-badge available">Available (8h)</span>
+              </div>
+              <div class="lp-sim-progress-wrap">
+                <div class="lp-sim-progress-info">
+                  <span>Weekly Lectures & Duties</span>
+                  <span id="simVal3" style="font-weight: 700; color: #34d399;">8 / 16 hrs (50%)</span>
+                </div>
+                <div class="lp-sim-bar">
+                  <div id="simBar3" class="lp-sim-bar-fill" style="width: 50%; background: #10b981;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Simulator Interactive Action Controls -->
+          <div class="lp-sim-actions">
+            <button type="button" class="lp-btn lp-btn-outline" onclick="window.simulateDutyAssignment()">
+              <span>➕ Simulate New 3hr Exam Duty</span>
+            </button>
+            <button type="button" class="lp-btn lp-btn-primary" onclick="window.simulateAutoRebalance()">
+              <span>⚖️ Run AI Load Rebalancer</span>
+            </button>
+            <button type="button" class="lp-btn lp-btn-ghost" onclick="window.resetSimulator()">
+              <span>🔄 Reset Demo</span>
+            </button>
+          </div>
+          <div id="simStatusMsg" style="text-align: center; margin-top: 14px; font-size: 13px; color: #38bdf8; font-weight: 500;">
+            Status: System balanced. Prof. Vikram Singh is currently recommended for extra duties.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bento Grid Platform Features -->
+    <section id="lp-features" class="lp-section">
+      <div class="lp-container">
+        <div class="lp-section-header">
+          <span class="lp-section-tag">Architecture & Capabilities</span>
+          <h2 class="lp-section-title">Built for Engineering Excellence</h2>
+          <p class="lp-section-desc">Six enterprise-grade pillars ensuring zero scheduling conflict and effortless academic administration.</p>
+        </div>
+
+        <div class="lp-bento-grid">
+          <div class="lp-bento-card">
+            <div class="lp-bento-icon">🛡️</div>
+            <h3 class="lp-bento-title">Real-Time Conflict Prevention</h3>
+            <p class="lp-bento-desc">Millisecond validation prevents classroom double-booking and teacher time collisions before assignment commit.</p>
+          </div>
+
+          <div class="lp-bento-card">
+            <div class="lp-bento-icon">⚖️</div>
+            <h3 class="lp-bento-title">Dynamic Workload Balancing</h3>
+            <p class="lp-bento-desc">Tracks lecture hours, practical lab sessions, and college duties against departmental thresholds automatically.</p>
+          </div>
+
+          <div class="lp-bento-card">
+            <div class="lp-bento-icon">📅</div>
+            <h3 class="lp-bento-title">Visual Weekly Timetables</h3>
+            <p class="lp-bento-desc">Interactive weekly timetable grid color-coded by class, subject, and classroom hall with live filtering.</p>
+          </div>
+
+          <div class="lp-bento-card">
+            <div class="lp-bento-icon">📑</div>
+            <h3 class="lp-bento-title">Official Accreditation Exports</h3>
+            <p class="lp-bento-desc">1-Click generation of high-resolution institutional PDF & Excel workload statements compliant with NAAC and NBA audits.</p>
+          </div>
+
+          <div class="lp-bento-card">
+            <div class="lp-bento-icon">🔔</div>
+            <h3 class="lp-bento-title">Automated Duty Reminders</h3>
+            <p class="lp-bento-desc">Scheduled cron dispatch for upcoming lectures, substitute slots, and exam duties delivered via in-app alerts.</p>
+          </div>
+
+          <div class="lp-bento-card">
+            <div class="lp-bento-icon">🔐</div>
+            <h3 class="lp-bento-title">Role-Based Security</h3>
+            <p class="lp-bento-desc">Custom administrative workspaces for HODs with full assignment authority, and personal portals for faculty members.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Engineering Academic Blocks Section -->
+    <section id="lp-departments" class="lp-section lp-section-alt">
+      <div class="lp-container">
+        <div class="lp-section-header">
+          <span class="lp-section-tag">Campus Infrastructure</span>
+          <h2 class="lp-section-title">Departmental Academic Coverage</h2>
+          <p class="lp-section-desc">Coordinating teaching capacity across lecture halls, specialized laboratories, and seminar blocks.</p>
+        </div>
+
+        <div class="lp-bento-grid">
+          <div class="lp-bento-card" style="border-left: 4px solid #38bdf8;">
+            <h3 class="lp-bento-title">Computer Science & Engineering</h3>
+            <p class="lp-bento-desc">Aryabhata Academic Block • LH-301, LH-302, Computing Center Labs 1 & 2 • 6 Faculty Members</p>
+          </div>
+          <div class="lp-bento-card" style="border-left: 4px solid #a855f7;">
+            <h3 class="lp-bento-title">Artificial Intelligence & Data Science</h3>
+            <p class="lp-bento-desc">Computing Center Lab 3 • AI Research Lab • Seminar Hall A • Machine Learning Curriculum</p>
+          </div>
+          <div class="lp-bento-card" style="border-left: 4px solid #10b981;">
+            <h3 class="lp-bento-title">Central Examination & Quality Cell</h3>
+            <p class="lp-bento-desc">Mid-Term Invigilation • Flying Squad Allocation • NAAC Criterion 2 Course File Auditing</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Institutional Footer -->
+    <footer class="lp-footer">
+      <div class="lp-footer-content">
+        <div class="lp-footer-title">🎓 Suryodaya College Of Engineering and Technology</div>
+        <div class="lp-footer-sub">Faculty Load Management System • Department of Computer Science & Engineering • Academic Year 2026-2027</div>
+      </div>
+    </footer>
   </div>
+
+  <!-- Client-side Interactive Load Balancer Simulator Script -->
+  <script>
+    window.simulateDutyAssignment = function() {
+      const msg = document.getElementById('simStatusMsg');
+      const b3 = document.getElementById('simBar3');
+      const val3 = document.getElementById('simVal3');
+      const badge3 = document.getElementById('simBadge3');
+      if (b3 && val3 && badge3 && msg) {
+        b3.style.width = '69%';
+        b3.style.background = '#3b82f6';
+        val3.textContent = '11 / 16 hrs (69%)';
+        val3.style.color = '#60a5fa';
+        badge3.className = 'lp-sim-badge balanced';
+        badge3.textContent = 'Assigned Duty (11h)';
+        msg.textContent = '⚡ Intelligent Action: 3hr Exam Duty successfully assigned to Prof. Vikram Singh (Zero Conflict detected).';
+        msg.style.color = '#34d399';
+      }
+    };
+
+    window.simulateAutoRebalance = function() {
+      const msg = document.getElementById('simStatusMsg');
+      const b1 = document.getElementById('simBar1');
+      const val1 = document.getElementById('simVal1');
+      const badge1 = document.getElementById('simBadge1');
+      const b3 = document.getElementById('simBar3');
+      const val3 = document.getElementById('simVal3');
+      const badge3 = document.getElementById('simBadge3');
+
+      if (b1 && val1 && badge1 && b3 && val3 && badge3 && msg) {
+        b1.style.width = '94%';
+        b1.style.background = '#3b82f6';
+        val1.textContent = '15 / 16 hrs (94%)';
+        val1.style.color = '#60a5fa';
+        badge1.className = 'lp-sim-badge balanced';
+        badge1.textContent = 'Balanced (15h)';
+
+        b3.style.width = '69%';
+        b3.style.background = '#3b82f6';
+        val3.textContent = '11 / 16 hrs (69%)';
+        val3.style.color = '#60a5fa';
+        badge3.className = 'lp-sim-badge balanced';
+        badge3.textContent = 'Balanced (11h)';
+
+        msg.textContent = '✨ Rebalance Complete: 3hr remedial lecture transferred from Dr. Amit Verma to Prof. Vikram Singh. All faculty now balanced!';
+        msg.style.color = '#a78bfa';
+      }
+    };
+
+    window.resetSimulator = function() {
+      const msg = document.getElementById('simStatusMsg');
+      const b1 = document.getElementById('simBar1');
+      const val1 = document.getElementById('simVal1');
+      const badge1 = document.getElementById('simBadge1');
+      const b3 = document.getElementById('simBar3');
+      const val3 = document.getElementById('simVal3');
+      const badge3 = document.getElementById('simBadge3');
+
+      if (b1 && val1 && badge1 && b3 && val3 && badge3 && msg) {
+        b1.style.width = '100%';
+        b1.style.background = '#ef4444';
+        val1.textContent = '18 / 16 hrs (112%)';
+        val1.style.color = '#f87171';
+        badge1.className = 'lp-sim-badge high';
+        badge1.textContent = 'Overloaded (18h)';
+
+        b3.style.width = '50%';
+        b3.style.background = '#10b981';
+        val3.textContent = '8 / 16 hrs (50%)';
+        val3.style.color = '#34d399';
+        badge3.className = 'lp-sim-badge available';
+        badge3.textContent = 'Available (8h)';
+
+        msg.textContent = 'Status: Simulator reset to default departmental state.';
+        msg.style.color = '#38bdf8';
+      }
+    };
+  </script>
 
   <!-- ====================================================================
        2. AUTHENTICATED APP SHELL
@@ -69,7 +406,7 @@
     <!-- Sidebar Navigation -->
     <aside id="sidebar" class="sidebar">
       <div class="sidebar-header">
-        <div class="college-badge">AIT</div>
+        <div class="college-badge">SCET</div>
         <div class="college-info">
           <h1>Faculty Load</h1>
           <p>Engineering Portal</p>
