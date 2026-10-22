@@ -12,11 +12,16 @@ BUNDLED_DB = os.path.join(BASE_DIR, "faculty_load.db")
 raw_db_url = os.environ.get("DATABASE_URL")
 
 if raw_db_url:
+    import re
+    cleaned_url = raw_db_url.strip().strip('"').strip("'")
+    # Auto-strip accidental square brackets around password if pasted like :[password]@
+    cleaned_url = re.sub(r':\[(.*?)\]@', r':\1@', cleaned_url)
+    
     # SQLAlchemy 2.0+ requires 'postgresql://' instead of legacy 'postgres://'
-    if raw_db_url.startswith("postgres://"):
-        DATABASE_URL = raw_db_url.replace("postgres://", "postgresql://", 1)
+    if cleaned_url.startswith("postgres://"):
+        DATABASE_URL = cleaned_url.replace("postgres://", "postgresql://", 1)
     else:
-        DATABASE_URL = raw_db_url
+        DATABASE_URL = cleaned_url
 
     # Serverless-friendly PostgreSQL engine with health pre-ping & connection recycling
     engine = create_engine(

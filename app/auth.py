@@ -8,8 +8,8 @@ from sqlalchemy.orm import Session
 from app.database import get_db
 from app.models import User
 
-# Load secure JWT secret from environment variable with fallback for development
-SECRET_KEY = os.environ.get("JWT_SECRET_KEY", "suryodaya_college_faculty_load_management_secret_key_2026")
+# Load secure JWT secret from environment variable with fallback
+SECRET_KEY = os.environ.get("JWT_SECRET_KEY", "2d186e5ce9b88cee157e80042685daa5e488a9ff530369ce7939bcb893ce6d3b")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7  # 7 days
 
